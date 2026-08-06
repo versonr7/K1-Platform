@@ -31,24 +31,10 @@ jobs:
           targets: aarch64-linux-android
           components: rust-src
 
-      - name: Cache cargo-apk2 binary
-        uses: actions/cache@v4
-        with:
-          path: |
-            ~/.cargo/bin/cargo-apk2
-            ~/.cargo/.crates.toml
-            ~/.cargo/.crates2.json
-          key: ${{ runner.os }}-cargo-apk2-${{ hashFiles('**/Cargo.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-cargo-apk2-
-
-      - name: Install cargo-apk2
+      - name: Install cargo-apk2 via cargo-binstall
         run: |
-          if ! command -v cargo-apk2 &> /dev/null; then
-            cargo install cargo-apk2
-          else
-            echo "cargo-apk2 already installed, skipping"
-          fi
+          curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | sh
+          cargo binstall --no-confirm cargo-apk2
 
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
@@ -63,11 +49,13 @@ jobs:
 
       - name: Build Debug APK
         run: cargo apk2 build -p k1-app
-        env:
-          CARGO_TARGET_AARCH64_LINUX_ANDROID_RUSTFLAGS: "-Clink-arg=-lc -Clink-arg=-lm -Clink-arg=-landroid -Clink-arg=-llog -Clink-arg=-ldl"
+        # جرب حذف السطر التالي أولًا، وإن لم تظهر أخطاء في الرابط اتركه محذوفًا
+        # env:
+        #   CARGO_TARGET_AARCH64_LINUX_ANDROID_RUSTFLAGS: "-Clink-arg=-lc -Clink-arg=-lm -Clink-arg=-landroid -Clink-arg=-llog -Clink-arg=-ldl"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: k1-debug-apk
           path: target/debug/apk/*.apk
+          

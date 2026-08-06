@@ -29,6 +29,7 @@ macro_rules! logfox {
 use core::mem::MaybeUninit;
 
 // ===== STATE =====
+static SELECTED: AtomicI32 = AtomicI32::new(1); // 1 = العنصر الأوسط محدد
 static RUNNING: AtomicBool = AtomicBool::new(false);
 static WIDTH: AtomicI32 = AtomicI32::new(0);
 static HEIGHT: AtomicI32 = AtomicI32::new(0);
@@ -169,13 +170,21 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnTouch(
     y: f32,
     action: i32,
 ) {
-    if action == 0 || action == 1 {
+    if action == 0 {
+        // ACTION_DOWN
+        let w = WIDTH.load(Ordering::Acquire) as f32;
+        let current = SELECTED.load(Ordering::Relaxed);
+
+        if x < w * 0.33 {
+            SELECTED.store(0.max(current - 1), Ordering::Release); // انتقل لليسار
+        } else if x > w * 0.66 {
+            SELECTED.store(2.min(current + 1), Ordering::Release); // انتقل لليمين
+        }
+
         logfox!(
             "ZAVOGLES",
-            "Touch: x={} y={} action={}",
-            x as i32,
-            y as i32,
-            action
+            "Selected category: {}",
+            SELECTED.load(Ordering::Relaxed)
         );
     }
 }
@@ -288,17 +297,13 @@ fn draw_xmb(batch: &mut BatchRenderer<400, 600>, w: f32, h: f32, time: f32) {
 
     for (i, cat) in categories.iter().enumerate() {
         let x = start_x + (i as f32 * spacing);
-        let selected = i == 1; // Middle one selected
-        let alpha = if selected {
-            1.0
+        let selected = SELECTED.load(Ordering::Acquire);
+        let is_selected = i as i32 == selected;
+        let alpha = if is_selected { 1.0 } else { 0.4 };
+        let color = if is_selected {
+            Color::new(0.3, 0.7, 1.0, alpha) // محدد
         } else {
-            0.5 + libm::sinf(time + i as f32) * 0.1
-        };
-
-        let color = if selected {
-            Color::new(0.3, 0.6, 1.0, alpha) // Bright blue for selected
-        } else {
-            Color::new(0.1, 0.3, 0.6, alpha) // Darker for unselected
+            Color::new(0.1, 0.3, 0.6, alpha) // غير محدد
         };
 
         // Larger buttons
