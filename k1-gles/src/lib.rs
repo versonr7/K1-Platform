@@ -1,6 +1,8 @@
 #![no_std]
 #![allow(warnings)]
 
+pub mod font;
+
 use core::ffi::{c_char, c_int, c_void};
 use k1_math::{Color, Mat4, Rect, Vec2};
 
@@ -159,6 +161,7 @@ use egl_mock::*;
 #[link(name = "GLESv2")]
 #[link(name = "EGL")]
 extern "C" {
+    pub fn glUniform1i(location: c_int, v: c_int);
     pub fn glViewport(x: c_int, y: c_int, width: c_int, height: c_int);
     pub fn glUniform1f(location: c_int, v: f32);
     pub fn glClearColor(r: f32, g: f32, b: f32, a: f32);
@@ -237,6 +240,7 @@ pub mod gl_mock {
     use core::sync::atomic::{AtomicI32, Ordering};
     static NEXT: AtomicI32 = AtomicI32::new(100);
 
+    pub unsafe fn glUniform1i(_: c_int, _: c_int) {}
     pub unsafe fn glViewport(_: c_int, _: c_int, _: c_int, _: c_int) {}
     pub unsafe fn glBindAttribLocation(_: c_int, _: c_int, _: *const c_char) {}
     pub unsafe fn glUniform1f(_: c_int, _: f32) {}
@@ -484,9 +488,11 @@ pub const WAVE_FRAGMENT_SHADER: &str = r#"
 precision mediump float;
 varying vec2 v_uv;
 varying vec4 v_color;
+uniform sampler2D u_texture;
 
 void main() {
-    gl_FragColor = v_color;
+    vec4 texel = texture2D(u_texture, v_uv);
+    gl_FragColor = v_color * texel;
 }
 "#;
 
@@ -548,11 +554,20 @@ impl Program {
             glUniformMatrix4fv(loc, 1, 0, arr.as_ptr());
         }
     }
+
     pub fn set_f32(&self, loc: c_int, v: f32) {
         unsafe {
             glUniform1f(loc, v);
         }
     }
+
+    // 👇 أدخل set_i32 هنا
+    pub fn set_i32(&self, loc: c_int, v: i32) {
+        unsafe {
+            glUniform1i(loc, v);
+        }
+    }
+
     pub fn handle(&self) -> c_int {
         self.handle
     }
@@ -692,6 +707,8 @@ pub struct BatchRenderer<const MAX_VERTICES: usize, const MAX_INDICES: usize> {
     vbo: Option<Buffer>,
     ibo: Option<Buffer>,
     program: Option<Program>,
+    white_texture: Option<Texture>, // ← NEW
+    current_texture: c_int,         // ← NEW
 }
 
 impl<const MAX_VERTICES: usize, const MAX_INDICES: usize> BatchRenderer<MAX_VERTICES, MAX_INDICES> {
@@ -709,6 +726,15 @@ impl<const MAX_VERTICES: usize, const MAX_INDICES: usize> BatchRenderer<MAX_VERT
         prog.attach_shader(&vs);
         prog.attach_shader(&fs);
         prog.link()?;
+        // --- إنشاء نسيج أبيض 1×1 (يُستخدم عند رسم الأشكال بدون نسيج) ---
+        let white_tex = Texture::new()?;
+        let white_pixel: [u8; 4] = [255, 255, 255, 255];
+        white_tex
+            .upload_rgba(1, 1, &white_pixel)
+            .map_err(|_| 0x9992)?;
+        let white_handle = white_tex.handle(); // <-- احفظ المؤشر هنا
+
+        // --- إنشاء المخازن المؤقتة (VBO, IBO) ---
         let vbo = Buffer::new(GL_ARRAY_BUFFER)?;
         let ibo = Buffer::new(GL_ELEMENT_ARRAY_BUFFER)?;
         let mut indices = [0u16; MAX_INDICES];
@@ -727,6 +753,7 @@ impl<const MAX_VERTICES: usize, const MAX_INDICES: usize> BatchRenderer<MAX_VERT
             indices[idx + 5] = base + 3;
         }
         ibo.upload(&indices, GL_STATIC_DRAW);
+
         Ok(Self {
             vertices: [Vertex::new(Vec2::ZERO, Vec2::ZERO, Color::TRANSPARENT); MAX_VERTICES],
             indices,
@@ -735,6 +762,8 @@ impl<const MAX_VERTICES: usize, const MAX_INDICES: usize> BatchRenderer<MAX_VERT
             vbo: Some(vbo),
             ibo: Some(ibo),
             program: Some(prog),
+            white_texture: Some(white_tex),
+            current_texture: white_handle, // احتفظ بهذا فقط
         })
     }
     pub fn begin_frame(&mut self) {
@@ -770,6 +799,10 @@ impl<const MAX_VERTICES: usize, const MAX_INDICES: usize> BatchRenderer<MAX_VERT
         self.vertex_count += 4;
         self.index_count += 6;
     }
+    pub fn set_texture(&mut self, texture: &Texture) {
+        self.current_texture = texture.handle();
+    }
+
     pub fn end_frame(&mut self, matrix: &Mat4, time: f32, wave_amp: f32, wave_freq: f32) {
         if self.vertex_count == 0 {
             return;
@@ -783,6 +816,15 @@ impl<const MAX_VERTICES: usize, const MAX_INDICES: usize> BatchRenderer<MAX_VERT
             prog.set_f32(prog.uniform_location("u_time"), time);
             prog.set_f32(prog.uniform_location("u_wave_amp"), wave_amp);
             prog.set_f32(prog.uniform_location("u_wave_freq"), wave_freq);
+
+            // ===== الجديد: ربط النسيج =====
+            prog.set_i32(prog.uniform_location("u_texture"), 0);
+            unsafe {
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, self.current_texture);
+            }
+            // ============================
+
             unsafe {
                 glEnableVertexAttribArray(0);
                 glEnableVertexAttribArray(1);
