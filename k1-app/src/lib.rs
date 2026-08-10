@@ -1369,41 +1369,37 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
         let ctx = &mut *ctx_ptr;
 
         let batch_ptr = BATCH.load(Ordering::Acquire);
-if batch_ptr.is_null() {
-    // --- تهيئة سياق OpenGL على خيط العرض ---
-    if let Err(e) = ctx.make_current() {
-        logfox!("ZAVOGLES", "ERROR: make_current failed: {}", e);
-        FRAME_LOCK.store(false, Ordering::Release);
-        return;
-    }
-    ctx.setup_gl_state();
+        if batch_ptr.is_null() {
+            if let Err(e) = ctx.make_current() {
+                logfox!("ZAVOGLES", "ERROR: make_current failed: {}", e);
+                FRAME_LOCK.store(false, Ordering::Release);
+                return;
+            }
+            ctx.setup_gl_state();
 
-    // --- إنشاء BatchRenderer جديد ---
-    match BatchRenderer::<400, 600>::new() {
-        Ok(batch) => {
-            BATCH_STORAGE.write(batch);
-            BATCH.store(BATCH_STORAGE.as_mut_ptr(), Ordering::Release);
-            logfox!("ZAVOGLES", "BatchRenderer created on render thread");
+            match BatchRenderer::<400, 600>::new() {
+                Ok(batch) => {
+                    BATCH_STORAGE.write(batch);
+                    BATCH.store(BATCH_STORAGE.as_mut_ptr(), Ordering::Release);
+                    logfox!("ZAVOGLES", "BatchRenderer created on render thread");
+                }
+                Err(e) => {
+                    logfox!("ZAVOGLES", "ERROR: BatchRenderer failed: {}", e);
+                    FRAME_LOCK.store(false, Ordering::Release);
+                    return;
+                }
+            }
+
+            // --- إبطال الخط القديم (إذا كان موجودًا) ---
+            let font_ptr = FONT.load(Ordering::Acquire);
+            if !font_ptr.is_null() {
+                core::ptr::drop_in_place(font_ptr);
+                FONT.store(core::ptr::null_mut(), Ordering::Release);
+                logfox!("ZAVOGLES", "Font invalidated for re-upload");
+            }
         }
-        Err(e) => {
-            logfox!("ZAVOGLES", "ERROR: BatchRenderer failed: {}", e);
-            FRAME_LOCK.store(false, Ordering::Release);
-            return;
-        }
-    }
 
-    // --- إبطال الخط القديم (إذا كان موجودًا من سياق سابق) ---
-    let font_ptr = FONT.load(Ordering::Acquire);
-    if !font_ptr.is_null() {
-        unsafe { core::ptr::drop_in_place(font_ptr); }
-        FONT.store(core::ptr::null_mut(), Ordering::Release);
-        logfox!("ZAVOGLES", "Font invalidated for re-upload");
-    }
-}
-
-let batch = &mut *BATCH.load(Ordering::Acquire);
-
-// ... (باقي الكود: تحميل w, h, رسم الخلفية والموجة والأزرار والنص) ...
+        let batch = &mut *BATCH.load(Ordering::Acquire);
 
         let w = WIDTH.load(Ordering::Acquire) as f32;
         let h = HEIGHT.load(Ordering::Acquire) as f32;
@@ -1442,39 +1438,48 @@ let batch = &mut *BATCH.load(Ordering::Acquire);
         draw_xmb_buttons(batch, w, h, time);
         batch.end_frame(&matrix, time, 0.0, 0.0);
 
+        // --- 🔬 اختبار: رسم مربع كبير بالنسيج ---
+        let font_test_ptr = FONT.load(Ordering::Acquire);
+        if !font_test_ptr.is_null() {
+            let font_test = &*font_test_ptr;
+            batch.begin_frame();
+            batch.set_texture(&font_test.atlas);
+            // استخدم UV للخلية الأولى (حرف المسافة أو '!')
+            let uv = Rect::from_coords(0.0, 0.0, 0.0625, 0.0625);
+            // ارسم مربع كبير في المنتصف
+            let rect = Rect::from_coords(w * 0.25, h * 0.25, w * 0.5, h * 0.5);
+            batch.draw_quad(rect, uv, Color::WHITE);
+            batch.end_frame(&matrix, time, 0.0, 0.0);
+            logfox!("ZAVOGLES", "TEST: Drew large atlas quad at center");
+        }
+
         // --- XMB TEXT (الخط) ---
-        let font_ptr = FONT.load(Ordering::Acquire);
-        if font_ptr.is_null() {
-            logfox!("ZAVOGLES", "Font init starting..."); // ← هنا
+        let font_ptr2 = FONT.load(Ordering::Acquire);
+        if font_ptr2.is_null() {
             match BitmapFont::from_atlas_data(
                 FONT_ATLAS_BYTES,
                 FONT_ATLAS_W,
                 FONT_ATLAS_H,
                 FONT_GLYPHS,
-                32.0,
+                32.0, // line_height
             ) {
                 Ok(font) => {
                     FONT_STORAGE.write(font);
                     FONT.store(FONT_STORAGE.as_mut_ptr(), Ordering::Release);
-                    logfox!("ZAVOGLES", "Font loaded OK"); // ← وهنا
+                    logfox!("ZAVOGLES", "Font loaded OK");
                 }
                 Err(e) => {
-                    logfox!("ZAVOGLES", "ERROR: Font init failed: {}", e); // ← وهنا
+                    logfox!("ZAVOGLES", "ERROR: Font init failed: {}", e);
                 }
             }
         }
 
-        let font_ptr2 = FONT.load(Ordering::Acquire);
-        logfox!("ZAVOGLES", "font_ptr2 null? {}", font_ptr2.is_null()); // ← هنا
-
-        if !font_ptr2.is_null() {
-            let font = &*font_ptr2;
-            logfox!("ZAVOGLES", "Drawing text with font OK"); // ← وهنا
+        let font_ptr_final = FONT.load(Ordering::Acquire);
+        if !font_ptr_final.is_null() {
+            let font = &*font_ptr_final;
             batch.begin_frame();
             draw_xmb_text(batch, font, w, h);
             batch.end_frame(&matrix, time, 0.0, 0.0);
-        } else {
-            logfox!("ZAVOGLES", "Font is NULL, skipping text draw"); // ← وهنا
         }
 
         // --- SWAP ---
