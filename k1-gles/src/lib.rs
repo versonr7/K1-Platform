@@ -769,6 +769,10 @@ impl<const MAX_VERTICES: usize, const MAX_INDICES: usize> BatchRenderer<MAX_VERT
     pub fn begin_frame(&mut self) {
         self.vertex_count = 0;
         self.index_count = 0;
+        // إعادة تعيين النسيج الحالي إلى الأبيض في بداية كل دفعة
+        if let Some(ref white) = self.white_texture {
+            self.current_texture = white.handle();
+        }
     }
     pub fn draw_quad(&mut self, rect: Rect, uv: Rect, color: Color) {
         if self.vertex_count + 4 > MAX_VERTICES || self.index_count + 6 > MAX_INDICES {
