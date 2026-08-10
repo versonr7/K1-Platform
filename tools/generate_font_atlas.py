@@ -2,23 +2,19 @@
 from PIL import Image, ImageDraw, ImageFont
 import os
 
-# ========== CONFIG ==========
 FONT_PATH = "tools/DejaVuSans.ttf"
-# fallback للمسار Alpine إذا ما موجود:
 if not os.path.exists(FONT_PATH):
     FONT_PATH = "/usr/share/fonts/dejavu/DejaVuSans.ttf"
 
-ATLAS_SIZE = 512      # ← غيّر لـ 512 أو 1024 لجودة أحسن
-FONT_SIZE = 32        # ← نفس ATLAS_SIZE / GLYPHS_PER_ROW
+ATLAS_SIZE = 512
+FONT_SIZE = 32
 OUTPUT_DIR = "assets"
 GLYPHS_PER_ROW = 16
 START_CHAR = 32
 END_CHAR = 127
-# ============================
 
 def main():
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-
     if not os.path.exists(FONT_PATH):
         print(f"Font not found: {FONT_PATH}")
         return
@@ -39,60 +35,50 @@ def main():
         cell_x = col * cell_w
         cell_y = row * cell_h
 
-        # قياس الحرف الضيق (tight bbox)
         bbox = draw.textbbox((0, 0), ch, font=font)
         tw = bbox[2] - bbox[0]
         th = bbox[3] - bbox[1]
 
-        # موقع الرسم داخل الخلية (توسيط)
         draw_x = cell_x + (cell_w - tw) // 2
         draw_y = cell_y + (cell_h - th) // 2 - bbox[1]
 
         draw.text((draw_x, draw_y), ch, font=font, fill=(255, 255, 255, 255))
 
-        # UV ضيق يطابق الحرف الفعلي (مو الخلية كاملة)
+        # UV يطابق المساحة المرسومة (قبل القلب)
         uv_x = draw_x / ATLAS_SIZE
         uv_y = draw_y / ATLAS_SIZE
         uv_w = tw / ATLAS_SIZE
         uv_h = th / ATLAS_SIZE
 
-        # Advance: المسافة الأفقية الفعلية للحرف
         try:
             advance = float(font.getlength(ch))
         except Exception:
-            advance = float(tw + 2)  # fallback
+            advance = float(tw + 2)
 
         if ch == ' ':
             advance = float(FONT_SIZE * 0.4)
 
         glyph_data.append({
-            'char': ch,
-            'uv_x': uv_x,
-            'uv_y': uv_y,
-            'uv_w': uv_w,
-            'uv_h': uv_h,
-            'width': float(tw),
-            'height': float(th),
-            'advance': advance,
-            'x_offset': 0.0,
-            'y_offset': 0.0,
+            'char': ch, 'uv_x': uv_x, 'uv_y': uv_y, 'uv_w': uv_w, 'uv_h': uv_h,
+            'width': float(tw), 'height': float(th), 'advance': advance,
+            'x_offset': 0.0, 'y_offset': 0.0,
         })
 
-    # Save
+    # ✅ القلب الرأسي للأطلس (PIL top-down → OpenGL bottom-up)
+    atlas = atlas.transpose(Image.FLIP_TOP_BOTTOM)
+
     with open(os.path.join(OUTPUT_DIR, "font_atlas.rgba"), "wb") as f:
         f.write(atlas.tobytes())
     atlas.save(os.path.join(OUTPUT_DIR, "font_atlas.png"))
-    print(f"Saved atlas: {ATLAS_SIZE}x{ATLAS_SIZE}")
+    print(f"Saved flipped atlas: {ATLAS_SIZE}x{ATLAS_SIZE}")
 
-    # Generate Rust
     with open(os.path.join(OUTPUT_DIR, "font_glyphs.rs"), "w") as f:
         f.write("// Auto-generated\n")
         f.write("use k1_gles::font::Glyph;\n\n")
         f.write(f"pub const FONT_GLYPHS: [Option<Glyph>; {len(glyph_data)}] = [\n")
         for g in glyph_data:
             esc = repr(g['char'])
-            f.write(f"    // {esc}\n")
-            f.write(f"    Some(Glyph {{\n")
+            f.write(f"    // {esc}\n    Some(Glyph {{\n")
             f.write(f"        uv_x: {g['uv_x']:.6}f32,\n")
             f.write(f"        uv_y: {g['uv_y']:.6}f32,\n")
             f.write(f"        uv_w: {g['uv_w']:.6}f32,\n")

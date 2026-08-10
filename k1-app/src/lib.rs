@@ -1370,27 +1370,35 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
 
         let batch_ptr = BATCH.load(Ordering::Acquire);
         if batch_ptr.is_null() {
-            if let Err(e) = ctx.make_current() {
-                logfox!("ZAVOGLES", "ERROR: make_current failed: {}", e);
-                FRAME_LOCK.store(false, Ordering::Release);
-                return;
-            }
-            ctx.setup_gl_state();
+    if let Err(e) = ctx.make_current() {
+        logfox!("ZAVOGLES", "ERROR: make_current failed: {}", e);
+        FRAME_LOCK.store(false, Ordering::Release);
+        return;
+    }
+    ctx.setup_gl_state();
 
-            match BatchRenderer::<400, 600>::new() {
-                Ok(batch) => {
-                    BATCH_STORAGE.write(batch);
-                    BATCH.store(BATCH_STORAGE.as_mut_ptr(), Ordering::Release);
-                    logfox!("ZAVOGLES", "BatchRenderer created on render thread");
-                }
-                Err(e) => {
-                    logfox!("ZAVOGLES", "ERROR: BatchRenderer failed: {}", e);
-                    FRAME_LOCK.store(false, Ordering::Release);
-                    return;
-                }
-            }
+    match BatchRenderer::<400, 600>::new() {
+        Ok(batch) => {
+            BATCH_STORAGE.write(batch);
+            BATCH.store(BATCH_STORAGE.as_mut_ptr(), Ordering::Release);
+            logfox!("ZAVOGLES", "BatchRenderer created on render thread");
         }
-
+        Err(e) => {
+            logfox!("ZAVOGLES", "ERROR: BatchRenderer failed: {}", e);
+            FRAME_LOCK.store(false, Ordering::Release);
+            return;
+        }
+    }
+        
+    // ✅ NEW: Invalidate font so it gets re-uploaded with fresh texture
+    let font_ptr = FONT.load(Ordering::Acquire);
+    if !font_ptr.is_null() {
+        unsafe { core::ptr::drop_in_place(font_ptr); }
+        FONT.store(core::ptr::null_mut(), Ordering::Release);
+        logfox!("ZAVOGLES", "Font invalidated for re-upload");
+    }
+}
+    
         let batch = &mut *BATCH.load(Ordering::Acquire);
 
         // تهيئة الخط (مرة واحدة)
