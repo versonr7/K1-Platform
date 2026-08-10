@@ -1370,58 +1370,36 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
 
         let batch_ptr = BATCH.load(Ordering::Acquire);
         if batch_ptr.is_null() {
-    if let Err(e) = ctx.make_current() {
-        logfox!("ZAVOGLES", "ERROR: make_current failed: {}", e);
-        FRAME_LOCK.store(false, Ordering::Release);
-        return;
-    }
-    ctx.setup_gl_state();
+            if let Err(e) = ctx.make_current() {
+                logfox!("ZAVOGLES", "ERROR: make_current failed: {}", e);
+                FRAME_LOCK.store(false, Ordering::Release);
+                return;
+            }
+            ctx.setup_gl_state();
 
-    match BatchRenderer::<400, 600>::new() {
-        Ok(batch) => {
-            BATCH_STORAGE.write(batch);
-            BATCH.store(BATCH_STORAGE.as_mut_ptr(), Ordering::Release);
-            logfox!("ZAVOGLES", "BatchRenderer created on render thread");
-        }
-        Err(e) => {
-            logfox!("ZAVOGLES", "ERROR: BatchRenderer failed: {}", e);
-            FRAME_LOCK.store(false, Ordering::Release);
-            return;
-        }
-    }
-        
-    // ✅ NEW: Invalidate font so it gets re-uploaded with fresh texture
-    let font_ptr = FONT.load(Ordering::Acquire);
-    if !font_ptr.is_null() {
-        unsafe { core::ptr::drop_in_place(font_ptr); }
-        FONT.store(core::ptr::null_mut(), Ordering::Release);
-        logfox!("ZAVOGLES", "Font invalidated for re-upload");
-    }
-}
-    
-        let batch = &mut *BATCH.load(Ordering::Acquire);
-
-        // تهيئة الخط (مرة واحدة)
-        let font_ptr = FONT.load(Ordering::Acquire);
-        if font_ptr.is_null() {
-            match BitmapFont::from_atlas_data(
-                FONT_ATLAS_BYTES,
-                FONT_ATLAS_W,
-                FONT_ATLAS_H,
-                FONT_GLYPHS,
-                32.0,
-            ) {
-                Ok(font) => {
-                    FONT_STORAGE.write(font);
-                    FONT.store(FONT_STORAGE.as_mut_ptr(), Ordering::Release);
-                    logfox!("ZAVOGLES", "Font loaded");
+            match BatchRenderer::<400, 600>::new() {
+                Ok(batch) => {
+                    BATCH_STORAGE.write(batch);
+                    BATCH.store(BATCH_STORAGE.as_mut_ptr(), Ordering::Release);
+                    logfox!("ZAVOGLES", "BatchRenderer created on render thread");
                 }
                 Err(e) => {
-                    logfox!("ZAVOGLES", "ERROR: Font init failed: {}", e);
+                    logfox!("ZAVOGLES", "ERROR: BatchRenderer failed: {}", e);
+                    FRAME_LOCK.store(false, Ordering::Release);
+                    return;
                 }
             }
+
+            // ✅ إذا كان فيه خط قديم (من سياق EGL سابق)، امسحه
+            let font_ptr = FONT.load(Ordering::Acquire);
+            if !font_ptr.is_null() {
+                core::ptr::drop_in_place(font_ptr);
+                FONT.store(core::ptr::null_mut(), Ordering::Release);
+                logfox!("ZAVOGLES", "Font invalidated for re-upload");
+            }
         }
-        let font = &*FONT.load(Ordering::Acquire); // هذا السطر هو سر الاختلاف والفائدة
+
+        let batch = &mut *BATCH.load(Ordering::Acquire);
 
         let w = WIDTH.load(Ordering::Acquire) as f32;
         let h = HEIGHT.load(Ordering::Acquire) as f32;
@@ -1434,7 +1412,7 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
 
         let matrix = Mat4::ortho(0.0, w, h, 0.0, -1.0, 1.0);
 
-        // --- BACKGROUND (subtle animated gradient) ---
+        // --- BACKGROUND ---
         batch.begin_frame();
         let pulse = libm::sinf(time * 0.3) * 0.02;
         batch.draw_quad(
@@ -1444,31 +1422,52 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
         );
         batch.end_frame(&matrix, time, 0.0, 0.0);
 
-        // --- WAVE BAND (separate, centered, wider) ---
+        // --- WAVE BAND ---
         batch.begin_frame();
         let wave_y = h * 0.30;
         let wave_height = h * 0.25;
         batch.draw_quad(
             Rect::from_coords(0.0, wave_y, w, wave_height),
             Rect::from_coords(0.0, 0.0, 1.0, 1.0),
-            Color::new(0.1, 0.2, 0.4, 0.4), // Semi-transparent
+            Color::new(0.1, 0.2, 0.4, 0.4),
         );
-        batch.end_frame(&matrix, time, 5.0, 0.015); // Visible wave
+        batch.end_frame(&matrix, time, 5.0, 0.015);
 
-        // --- XMB BUTTONS (colored quads, white texture) ---
+        // --- XMB BUTTONS ---
         batch.begin_frame();
         draw_xmb_buttons(batch, w, h, time);
         batch.end_frame(&matrix, time, 0.0, 0.0);
 
-        // --- XMB TEXT (font atlas) ---
-        if !FONT.load(Ordering::Acquire).is_null() {
-            let font = &*FONT.load(Ordering::Acquire);
+        // --- XMB TEXT (الخط) ---
+        let font_ptr = FONT.load(Ordering::Acquire);
+        if font_ptr.is_null() {
+            match BitmapFont::from_atlas_data(
+                FONT_ATLAS_BYTES,
+                FONT_ATLAS_W,
+                FONT_ATLAS_H,
+                FONT_GLYPHS,
+                32.0, // line_height = FONT_SIZE
+            ) {
+                Ok(font) => {
+                    FONT_STORAGE.write(font);
+                    FONT.store(FONT_STORAGE.as_mut_ptr(), Ordering::Release);
+                    logfox!("ZAVOGLES", "Font loaded OK");
+                }
+                Err(e) => {
+                    logfox!("ZAVOGLES", "ERROR: Font init failed: {}", e);
+                }
+            }
+        }
+
+        let font_ptr2 = FONT.load(Ordering::Acquire);
+        if !font_ptr2.is_null() {
+            let font = &*font_ptr2;
             batch.begin_frame();
             draw_xmb_text(batch, font, w, h);
             batch.end_frame(&matrix, time, 0.0, 0.0);
         }
 
-        // تبديل المخازن
+        // --- SWAP ---
         if RUNNING.load(Ordering::Acquire) {
             if let Err(e) = ctx.swap_buffers() {
                 logfox!("ZAVOGLES", "ERROR: swap_buffers: {}", e);
@@ -1513,7 +1512,7 @@ fn draw_xmb_text(batch: &mut BatchRenderer<400, 600>, font: &BitmapFont, w: f32,
     let y = h * 0.55;
     let spacing = w * 0.30;
     let start_x = w * 0.20;
-    let scale = (h * 0.035) / font.line_height; // حجم الخط يتناسب مع الشاشة
+    let scale = (h * 0.035) / font.line_height;
 
     for (i, cat) in categories.iter().enumerate() {
         let x = start_x + (i as f32 * spacing);
