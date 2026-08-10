@@ -1440,18 +1440,19 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
 
         // --- 🔬 اختبار: رسم مربع كبير بالنسيج ---
         let font_test_ptr = FONT.load(Ordering::Acquire);
-        if !font_test_ptr.is_null() {
-            let font_test = &*font_test_ptr;
-            batch.begin_frame();
-            batch.set_texture(&font_test.atlas);
-            // استخدم UV للخلية الأولى (حرف المسافة أو '!')
-            let uv = Rect::from_coords(0.0, 0.0, 0.0625, 0.0625);
-            // ارسم مربع كبير في المنتصف
-            let rect = Rect::from_coords(w * 0.25, h * 0.25, w * 0.5, h * 0.5);
-            batch.draw_quad(rect, uv, Color::WHITE);
-            batch.end_frame(&matrix, time, 0.0, 0.0);
-            logfox!("ZAVOGLES", "TEST: Drew large atlas quad at center");
-        }
+        // اختبار مؤقت بحرف 'A'
+if !font_test_ptr.is_null() {
+    let font_test = &*font_test_ptr;
+    batch.begin_frame();
+    batch.set_texture(&font_test.atlas);
+    // خذ إحداثيات A من font_glyphs.rs (مثلاً uv_x=0.0625, uv_y=0.125, uv_w=0.0625, uv_h=0.0625)
+    let flipped_v = 1.0 - 0.125 - 0.0625; // = 0.8125
+    let uv = Rect::from_coords(0.0625, flipped_v, 0.0625, 0.0625);
+    let rect = Rect::from_coords(w * 0.25, h * 0.25, 100.0, 100.0);
+    batch.draw_quad(rect, uv, Color::WHITE);
+    batch.end_frame(&matrix, time, 0.0, 0.0);
+    logfox!("ZAVOGLES", "TEST: Drew A flipped");
+}
 
         // --- XMB TEXT (الخط) ---
         let font_ptr2 = FONT.load(Ordering::Acquire);

@@ -60,3 +60,4 @@ jobs:
         with:
           name: k1-debug-apk
           path: target/debug/apk/*.apk
+          

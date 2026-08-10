@@ -44,11 +44,9 @@ def main():
 
         draw.text((draw_x, draw_y), ch, font=font, fill=(255, 255, 255, 255))
 
-        # UV يطابق المساحة المرسومة
-        # ✅ مهم: نستخدم (ATLAS_SIZE - 1 - draw_y) لأن OpenGL يقرأ من الأسفل
-        # أو نتركها كما هي ونقلب UV بدلاً من الصورة
+        # UV كما هو (سيبقى الصورة من الأعلى للأسفل، سنقلبه في الكود)
         uv_x = draw_x / ATLAS_SIZE
-        uv_y = (ATLAS_SIZE - draw_y - th) / ATLAS_SIZE  # ← قلب UV بدل الصورة
+        uv_y = draw_y / ATLAS_SIZE
         uv_w = tw / ATLAS_SIZE
         uv_h = th / ATLAS_SIZE
 
@@ -66,7 +64,7 @@ def main():
             'x_offset': 0.0, 'y_offset': 0.0,
         })
 
-    # ✅ لا قلب! احفظ كما هو
+    # ✅ احفظ بدون قلب
     with open(os.path.join(OUTPUT_DIR, "font_atlas.rgba"), "wb") as f:
         f.write(atlas.tobytes())
     atlas.save(os.path.join(OUTPUT_DIR, "font_atlas.png"))
