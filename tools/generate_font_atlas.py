@@ -44,9 +44,11 @@ def main():
 
         draw.text((draw_x, draw_y), ch, font=font, fill=(255, 255, 255, 255))
 
-        # UV يطابق المساحة المرسومة (قبل القلب)
+        # UV يطابق المساحة المرسومة
+        # ✅ مهم: نستخدم (ATLAS_SIZE - 1 - draw_y) لأن OpenGL يقرأ من الأسفل
+        # أو نتركها كما هي ونقلب UV بدلاً من الصورة
         uv_x = draw_x / ATLAS_SIZE
-        uv_y = draw_y / ATLAS_SIZE
+        uv_y = (ATLAS_SIZE - draw_y - th) / ATLAS_SIZE  # ← قلب UV بدل الصورة
         uv_w = tw / ATLAS_SIZE
         uv_h = th / ATLAS_SIZE
 
@@ -64,13 +66,11 @@ def main():
             'x_offset': 0.0, 'y_offset': 0.0,
         })
 
-    # ✅ القلب الرأسي للأطلس (PIL top-down → OpenGL bottom-up)
-    atlas = atlas.transpose(Image.FLIP_TOP_BOTTOM)
-
+    # ✅ لا قلب! احفظ كما هو
     with open(os.path.join(OUTPUT_DIR, "font_atlas.rgba"), "wb") as f:
         f.write(atlas.tobytes())
     atlas.save(os.path.join(OUTPUT_DIR, "font_atlas.png"))
-    print(f"Saved flipped atlas: {ATLAS_SIZE}x{ATLAS_SIZE}")
+    print(f"Saved atlas: {ATLAS_SIZE}x{ATLAS_SIZE}")
 
     with open(os.path.join(OUTPUT_DIR, "font_glyphs.rs"), "w") as f:
         f.write("// Auto-generated\n")
