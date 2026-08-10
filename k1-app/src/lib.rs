@@ -1441,30 +1441,36 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
         // --- XMB TEXT (الخط) ---
         let font_ptr = FONT.load(Ordering::Acquire);
         if font_ptr.is_null() {
+            logfox!("ZAVOGLES", "Font init starting..."); // ← هنا
             match BitmapFont::from_atlas_data(
                 FONT_ATLAS_BYTES,
                 FONT_ATLAS_W,
                 FONT_ATLAS_H,
                 FONT_GLYPHS,
-                32.0, // line_height = FONT_SIZE
+                32.0,
             ) {
                 Ok(font) => {
                     FONT_STORAGE.write(font);
                     FONT.store(FONT_STORAGE.as_mut_ptr(), Ordering::Release);
-                    logfox!("ZAVOGLES", "Font loaded OK");
+                    logfox!("ZAVOGLES", "Font loaded OK"); // ← وهنا
                 }
                 Err(e) => {
-                    logfox!("ZAVOGLES", "ERROR: Font init failed: {}", e);
+                    logfox!("ZAVOGLES", "ERROR: Font init failed: {}", e); // ← وهنا
                 }
             }
         }
 
         let font_ptr2 = FONT.load(Ordering::Acquire);
+        logfox!("ZAVOGLES", "font_ptr2 null? {}", font_ptr2.is_null()); // ← هنا
+
         if !font_ptr2.is_null() {
             let font = &*font_ptr2;
+            logfox!("ZAVOGLES", "Drawing text with font OK"); // ← وهنا
             batch.begin_frame();
             draw_xmb_text(batch, font, w, h);
             batch.end_frame(&matrix, time, 0.0, 0.0);
+        } else {
+            logfox!("ZAVOGLES", "Font is NULL, skipping text draw"); // ← وهنا
         }
 
         // --- SWAP ---
