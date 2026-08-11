@@ -39,12 +39,17 @@ def main():
         tw = bbox[2] - bbox[0]
         th = bbox[3] - bbox[1]
 
+        # ✅ توسيط الحرف داخل الخلية بدون ما يطلع برا الصورة
         draw_x = cell_x + (cell_w - tw) // 2
-        draw_y = cell_y + (cell_h - th) // 2 - bbox[1]
+        draw_y = cell_y + (cell_h - th) // 2
+        
+        # ✅ تأكد ما يصير سالب
+        draw_x = max(0, draw_x)
+        draw_y = max(0, draw_y)
 
         draw.text((draw_x, draw_y), ch, font=font, fill=(255, 255, 255, 255))
 
-        # UV كما هو (سيبقى الصورة من الأعلى للأسفل، سنقلبه في الكود)
+        # ✅ UV يطابق الموقع الفعلي (صورة طبيعية، نقلبها تحت)
         uv_x = draw_x / ATLAS_SIZE
         uv_y = draw_y / ATLAS_SIZE
         uv_w = tw / ATLAS_SIZE
@@ -64,11 +69,13 @@ def main():
             'x_offset': 0.0, 'y_offset': 0.0,
         })
 
-    # ✅ احفظ بدون قلب
+    # ✅ اقلب الصورة رأسياً قبل الحفظ (PIL top-down → OpenGL bottom-up)
+    atlas = atlas.transpose(Image.FLIP_TOP_BOTTOM)
+
     with open(os.path.join(OUTPUT_DIR, "font_atlas.rgba"), "wb") as f:
         f.write(atlas.tobytes())
     atlas.save(os.path.join(OUTPUT_DIR, "font_atlas.png"))
-    print(f"Saved atlas: {ATLAS_SIZE}x{ATLAS_SIZE}")
+    print(f"Saved flipped atlas: {ATLAS_SIZE}x{ATLAS_SIZE}")
 
     with open(os.path.join(OUTPUT_DIR, "font_glyphs.rs"), "w") as f:
         f.write("// Auto-generated\n")
