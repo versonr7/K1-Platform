@@ -54,7 +54,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // ' '
     Some(Glyph {
         uv_x: 0.0214844f32,
-        uv_y: -0.0273438f32,
+        uv_y: 0.03125f32,
         uv_w: 0.0195312f32,
         uv_h: 0.0f32,
         width: 1e+01f32,
@@ -66,7 +66,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '!'
     Some(Glyph {
         uv_x: 0.0800781f32,
-        uv_y: -0.00585938f32,
+        uv_y: 0.0078125f32,
         uv_w: 0.0253906f32,
         uv_h: 0.0449219f32,
         width: 1e+01f32,
@@ -78,7 +78,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '"'
     Some(Glyph {
         uv_x: 0.140625f32,
-        uv_y: -0.00585938f32,
+        uv_y: 0.0078125f32,
         uv_w: 0.0292969f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -90,7 +90,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '#'
     Some(Glyph {
         uv_x: 0.191406f32,
-        uv_y: -0.00585938f32,
+        uv_y: 0.0078125f32,
         uv_w: 0.0527344f32,
         uv_h: 0.0449219f32,
         width: 3e+01f32,
@@ -102,7 +102,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '$'
     Some(Glyph {
         uv_x: 0.261719f32,
-        uv_y: -0.0078125f32,
+        uv_y: 0.00195312f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0585938f32,
         width: 2e+01f32,
@@ -114,7 +114,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '%'
     Some(Glyph {
         uv_x: 0.314453f32,
-        uv_y: -0.00585938f32,
+        uv_y: 0.0078125f32,
         uv_w: 0.0585938f32,
         uv_h: 0.0449219f32,
         width: 3e+01f32,
@@ -126,7 +126,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '&'
     Some(Glyph {
         uv_x: 0.380859f32,
-        uv_y: -0.00585938f32,
+        uv_y: 0.0078125f32,
         uv_w: 0.0488281f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -138,7 +138,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // "'"
     Some(Glyph {
         uv_x: 0.458984f32,
-        uv_y: -0.00585938f32,
+        uv_y: 0.0078125f32,
         uv_w: 0.0175781f32,
         uv_h: 0.0449219f32,
         width: 9e+00f32,
@@ -150,7 +150,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '('
     Some(Glyph {
         uv_x: 0.519531f32,
-        uv_y: -0.00976562f32,
+        uv_y: 0.00195312f32,
         uv_w: 0.0234375f32,
         uv_h: 0.0566406f32,
         width: 1e+01f32,
@@ -162,7 +162,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // ')'
     Some(Glyph {
         uv_x: 0.582031f32,
-        uv_y: -0.00976562f32,
+        uv_y: 0.00195312f32,
         uv_w: 0.0234375f32,
         uv_h: 0.0566406f32,
         width: 1e+01f32,
@@ -174,7 +174,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '*'
     Some(Glyph {
         uv_x: 0.640625f32,
-        uv_y: -0.00585938f32,
+        uv_y: 0.0078125f32,
         uv_w: 0.03125f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -186,7 +186,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '+'
     Some(Glyph {
         uv_x: 0.691406f32,
-        uv_y: -0.0078125f32,
+        uv_y: 0.00976562f32,
         uv_w: 0.0527344f32,
         uv_h: 0.0410156f32,
         width: 3e+01f32,
@@ -198,7 +198,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // ','
     Some(Glyph {
         uv_x: 0.771484f32,
-        uv_y: -0.0273438f32,
+        uv_y: 0.0234375f32,
         uv_w: 0.0195312f32,
         uv_h: 0.015625f32,
         width: 1e+01f32,
@@ -210,7 +210,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '-'
     Some(Glyph {
         uv_x: 0.832031f32,
-        uv_y: -0.0175781f32,
+        uv_y: 0.0214844f32,
         uv_w: 0.0234375f32,
         uv_h: 0.0195312f32,
         width: 1e+01f32,
@@ -222,7 +222,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '.'
     Some(Glyph {
         uv_x: 0.896484f32,
-        uv_y: -0.0234375f32,
+        uv_y: 0.0273438f32,
         uv_w: 0.0195312f32,
         uv_h: 0.0078125f32,
         width: 1e+01f32,
@@ -234,7 +234,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '/'
     Some(Glyph {
         uv_x: 0.957031f32,
-        uv_y: -0.0078125f32,
+        uv_y: 0.00585938f32,
         uv_w: 0.0214844f32,
         uv_h: 0.0507812f32,
         width: 1e+01f32,
@@ -246,7 +246,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '0'
     Some(Glyph {
         uv_x: 0.0117188f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -258,7 +258,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '1'
     Some(Glyph {
         uv_x: 0.0742188f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -270,7 +270,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '2'
     Some(Glyph {
         uv_x: 0.136719f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -282,7 +282,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '3'
     Some(Glyph {
         uv_x: 0.199219f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -294,7 +294,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '4'
     Some(Glyph {
         uv_x: 0.261719f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -306,7 +306,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '5'
     Some(Glyph {
         uv_x: 0.324219f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -318,7 +318,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '6'
     Some(Glyph {
         uv_x: 0.386719f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -330,7 +330,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '7'
     Some(Glyph {
         uv_x: 0.449219f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -342,7 +342,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '8'
     Some(Glyph {
         uv_x: 0.511719f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -354,7 +354,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '9'
     Some(Glyph {
         uv_x: 0.574219f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -366,7 +366,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // ':'
     Some(Glyph {
         uv_x: 0.644531f32,
-        uv_y: 0.0507812f32,
+        uv_y: 0.0761719f32,
         uv_w: 0.0214844f32,
         uv_h: 0.0332031f32,
         width: 1e+01f32,
@@ -378,7 +378,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // ';'
     Some(Glyph {
         uv_x: 0.707031f32,
-        uv_y: 0.046875f32,
+        uv_y: 0.0722656f32,
         uv_w: 0.0214844f32,
         uv_h: 0.0410156f32,
         width: 1e+01f32,
@@ -390,7 +390,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '<'
     Some(Glyph {
         uv_x: 0.753906f32,
-        uv_y: 0.0527344f32,
+        uv_y: 0.0742188f32,
         uv_w: 0.0527344f32,
         uv_h: 0.0371094f32,
         width: 3e+01f32,
@@ -402,7 +402,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '='
     Some(Glyph {
         uv_x: 0.816406f32,
-        uv_y: 0.0488281f32,
+        uv_y: 0.078125f32,
         uv_w: 0.0527344f32,
         uv_h: 0.0292969f32,
         width: 3e+01f32,
@@ -414,7 +414,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '>'
     Some(Glyph {
         uv_x: 0.878906f32,
-        uv_y: 0.0527344f32,
+        uv_y: 0.0742188f32,
         uv_w: 0.0527344f32,
         uv_h: 0.0371094f32,
         width: 3e+01f32,
@@ -426,7 +426,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '?'
     Some(Glyph {
         uv_x: 0.951172f32,
-        uv_y: 0.0566406f32,
+        uv_y: 0.0703125f32,
         uv_w: 0.0332031f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -438,7 +438,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '@'
     Some(Glyph {
         uv_x: 0.0f32,
-        uv_y: 0.115234f32,
+        uv_y: 0.128906f32,
         uv_w: 0.0625f32,
         uv_h: 0.0546875f32,
         width: 3e+01f32,
@@ -450,7 +450,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'A'
     Some(Glyph {
         uv_x: 0.0722656f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0429688f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -462,7 +462,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'B'
     Some(Glyph {
         uv_x: 0.134766f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0429688f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -474,7 +474,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'C'
     Some(Glyph {
         uv_x: 0.197266f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0429688f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -486,7 +486,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'D'
     Some(Glyph {
         uv_x: 0.255859f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0488281f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -498,7 +498,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'E'
     Some(Glyph {
         uv_x: 0.324219f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -510,7 +510,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'F'
     Some(Glyph {
         uv_x: 0.388672f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0351562f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -522,7 +522,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'G'
     Some(Glyph {
         uv_x: 0.443359f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0488281f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -534,7 +534,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'H'
     Some(Glyph {
         uv_x: 0.507812f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.046875f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -546,7 +546,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'I'
     Some(Glyph {
         uv_x: 0.583984f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0175781f32,
         uv_h: 0.0449219f32,
         width: 9e+00f32,
@@ -558,7 +558,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'J'
     Some(Glyph {
         uv_x: 0.644531f32,
-        uv_y: 0.113281f32,
+        uv_y: 0.126953f32,
         uv_w: 0.0214844f32,
         uv_h: 0.0566406f32,
         width: 1e+01f32,
@@ -570,7 +570,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'K'
     Some(Glyph {
         uv_x: 0.697266f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0429688f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -582,7 +582,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'L'
     Some(Glyph {
         uv_x: 0.763672f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0351562f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -594,7 +594,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'M'
     Some(Glyph {
         uv_x: 0.816406f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0546875f32,
         uv_h: 0.0449219f32,
         width: 3e+01f32,
@@ -606,7 +606,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'N'
     Some(Glyph {
         uv_x: 0.882812f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.046875f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -618,7 +618,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'O'
     Some(Glyph {
         uv_x: 0.943359f32,
-        uv_y: 0.119141f32,
+        uv_y: 0.132812f32,
         uv_w: 0.0488281f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -630,7 +630,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'P'
     Some(Glyph {
         uv_x: 0.0117188f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0371094f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -642,7 +642,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'Q'
     Some(Glyph {
         uv_x: 0.0683594f32,
-        uv_y: 0.177734f32,
+        uv_y: 0.191406f32,
         uv_w: 0.0488281f32,
         uv_h: 0.0527344f32,
         width: 2e+01f32,
@@ -654,7 +654,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'R'
     Some(Glyph {
         uv_x: 0.134766f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0429688f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -666,7 +666,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'S'
     Some(Glyph {
         uv_x: 0.199219f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -678,7 +678,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'T'
     Some(Glyph {
         uv_x: 0.259766f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0410156f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -690,7 +690,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'U'
     Some(Glyph {
         uv_x: 0.320312f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0449219f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -702,7 +702,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'V'
     Some(Glyph {
         uv_x: 0.384766f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0429688f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -714,7 +714,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'W'
     Some(Glyph {
         uv_x: 0.4375f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0625f32,
         uv_h: 0.0449219f32,
         width: 3e+01f32,
@@ -726,7 +726,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'X'
     Some(Glyph {
         uv_x: 0.509766f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0429688f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -738,7 +738,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'Y'
     Some(Glyph {
         uv_x: 0.572266f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0410156f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -750,7 +750,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'Z'
     Some(Glyph {
         uv_x: 0.634766f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0429688f32,
         uv_h: 0.0449219f32,
         width: 2e+01f32,
@@ -762,7 +762,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '['
     Some(Glyph {
         uv_x: 0.707031f32,
-        uv_y: 0.177734f32,
+        uv_y: 0.189453f32,
         uv_w: 0.0234375f32,
         uv_h: 0.0566406f32,
         width: 1e+01f32,
@@ -774,7 +774,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '\\'
     Some(Glyph {
         uv_x: 0.769531f32,
-        uv_y: 0.179688f32,
+        uv_y: 0.193359f32,
         uv_w: 0.0214844f32,
         uv_h: 0.0507812f32,
         width: 1e+01f32,
@@ -786,7 +786,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // ']'
     Some(Glyph {
         uv_x: 0.832031f32,
-        uv_y: 0.177734f32,
+        uv_y: 0.189453f32,
         uv_w: 0.0234375f32,
         uv_h: 0.0566406f32,
         width: 1e+01f32,
@@ -798,7 +798,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '^'
     Some(Glyph {
         uv_x: 0.878906f32,
-        uv_y: 0.181641f32,
+        uv_y: 0.195312f32,
         uv_w: 0.0527344f32,
         uv_h: 0.0449219f32,
         width: 3e+01f32,
@@ -810,7 +810,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '_'
     Some(Glyph {
         uv_x: 0.951172f32,
-        uv_y: 0.152344f32,
+        uv_y: 0.210938f32,
         uv_w: 0.0351562f32,
         uv_h: 0.015625f32,
         width: 2e+01f32,
@@ -822,7 +822,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '`'
     Some(Glyph {
         uv_x: 0.015625f32,
-        uv_y: 0.248047f32,
+        uv_y: 0.255859f32,
         uv_w: 0.03125f32,
         uv_h: 0.0507812f32,
         width: 2e+01f32,
@@ -834,7 +834,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'a'
     Some(Glyph {
         uv_x: 0.0742188f32,
-        uv_y: 0.240234f32,
+        uv_y: 0.263672f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -846,7 +846,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'b'
     Some(Glyph {
         uv_x: 0.136719f32,
-        uv_y: 0.246094f32,
+        uv_y: 0.257812f32,
         uv_w: 0.0390625f32,
         uv_h: 0.046875f32,
         width: 2e+01f32,
@@ -858,7 +858,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'c'
     Some(Glyph {
         uv_x: 0.201172f32,
-        uv_y: 0.240234f32,
+        uv_y: 0.263672f32,
         uv_w: 0.0351562f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -870,7 +870,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'd'
     Some(Glyph {
         uv_x: 0.261719f32,
-        uv_y: 0.246094f32,
+        uv_y: 0.257812f32,
         uv_w: 0.0390625f32,
         uv_h: 0.046875f32,
         width: 2e+01f32,
@@ -882,7 +882,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'e'
     Some(Glyph {
         uv_x: 0.324219f32,
-        uv_y: 0.240234f32,
+        uv_y: 0.263672f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -894,7 +894,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'f'
     Some(Glyph {
         uv_x: 0.394531f32,
-        uv_y: 0.246094f32,
+        uv_y: 0.257812f32,
         uv_w: 0.0234375f32,
         uv_h: 0.046875f32,
         width: 1e+01f32,
@@ -906,7 +906,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'g'
     Some(Glyph {
         uv_x: 0.449219f32,
-        uv_y: 0.232422f32,
+        uv_y: 0.255859f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0488281f32,
         width: 2e+01f32,
@@ -918,7 +918,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'h'
     Some(Glyph {
         uv_x: 0.511719f32,
-        uv_y: 0.246094f32,
+        uv_y: 0.257812f32,
         uv_w: 0.0390625f32,
         uv_h: 0.046875f32,
         width: 2e+01f32,
@@ -930,7 +930,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'i'
     Some(Glyph {
         uv_x: 0.583984f32,
-        uv_y: 0.246094f32,
+        uv_y: 0.257812f32,
         uv_w: 0.0175781f32,
         uv_h: 0.046875f32,
         width: 9e+00f32,
@@ -942,7 +942,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'j'
     Some(Glyph {
         uv_x: 0.646484f32,
-        uv_y: 0.238281f32,
+        uv_y: 0.25f32,
         uv_w: 0.0195312f32,
         uv_h: 0.0605469f32,
         width: 1e+01f32,
@@ -954,7 +954,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'k'
     Some(Glyph {
         uv_x: 0.699219f32,
-        uv_y: 0.246094f32,
+        uv_y: 0.257812f32,
         uv_w: 0.0371094f32,
         uv_h: 0.046875f32,
         width: 2e+01f32,
@@ -966,7 +966,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'l'
     Some(Glyph {
         uv_x: 0.771484f32,
-        uv_y: 0.246094f32,
+        uv_y: 0.257812f32,
         uv_w: 0.0175781f32,
         uv_h: 0.046875f32,
         width: 9e+00f32,
@@ -978,7 +978,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'm'
     Some(Glyph {
         uv_x: 0.8125f32,
-        uv_y: 0.240234f32,
+        uv_y: 0.263672f32,
         uv_w: 0.0605469f32,
         uv_h: 0.0351562f32,
         width: 3e+01f32,
@@ -990,7 +990,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'n'
     Some(Glyph {
         uv_x: 0.886719f32,
-        uv_y: 0.240234f32,
+        uv_y: 0.263672f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -1002,7 +1002,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'o'
     Some(Glyph {
         uv_x: 0.949219f32,
-        uv_y: 0.240234f32,
+        uv_y: 0.263672f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -1014,7 +1014,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'p'
     Some(Glyph {
         uv_x: 0.0117188f32,
-        uv_y: 0.294922f32,
+        uv_y: 0.318359f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0488281f32,
         width: 2e+01f32,
@@ -1026,7 +1026,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'q'
     Some(Glyph {
         uv_x: 0.0742188f32,
-        uv_y: 0.294922f32,
+        uv_y: 0.318359f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0488281f32,
         width: 2e+01f32,
@@ -1038,7 +1038,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'r'
     Some(Glyph {
         uv_x: 0.142578f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.326172f32,
         uv_w: 0.0273438f32,
         uv_h: 0.0351562f32,
         width: 1e+01f32,
@@ -1050,7 +1050,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 's'
     Some(Glyph {
         uv_x: 0.201172f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.326172f32,
         uv_w: 0.0332031f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -1062,7 +1062,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 't'
     Some(Glyph {
         uv_x: 0.267578f32,
-        uv_y: 0.306641f32,
+        uv_y: 0.320312f32,
         uv_w: 0.0253906f32,
         uv_h: 0.0449219f32,
         width: 1e+01f32,
@@ -1074,7 +1074,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'u'
     Some(Glyph {
         uv_x: 0.324219f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.326172f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -1086,7 +1086,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'v'
     Some(Glyph {
         uv_x: 0.386719f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.326172f32,
         uv_w: 0.0371094f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -1098,7 +1098,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'w'
     Some(Glyph {
         uv_x: 0.443359f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.326172f32,
         uv_w: 0.0507812f32,
         uv_h: 0.0351562f32,
         width: 3e+01f32,
@@ -1110,7 +1110,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'x'
     Some(Glyph {
         uv_x: 0.511719f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.326172f32,
         uv_w: 0.0371094f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -1122,7 +1122,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'y'
     Some(Glyph {
         uv_x: 0.574219f32,
-        uv_y: 0.294922f32,
+        uv_y: 0.318359f32,
         uv_w: 0.0371094f32,
         uv_h: 0.0488281f32,
         width: 2e+01f32,
@@ -1134,7 +1134,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // 'z'
     Some(Glyph {
         uv_x: 0.638672f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.326172f32,
         uv_w: 0.0332031f32,
         uv_h: 0.0351562f32,
         width: 2e+01f32,
@@ -1146,7 +1146,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '{'
     Some(Glyph {
         uv_x: 0.699219f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.314453f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0585938f32,
         width: 2e+01f32,
@@ -1158,7 +1158,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '|'
     Some(Glyph {
         uv_x: 0.769531f32,
-        uv_y: 0.300781f32,
+        uv_y: 0.3125f32,
         uv_w: 0.0214844f32,
         uv_h: 0.0625f32,
         width: 1e+01f32,
@@ -1170,7 +1170,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '}'
     Some(Glyph {
         uv_x: 0.824219f32,
-        uv_y: 0.302734f32,
+        uv_y: 0.314453f32,
         uv_w: 0.0390625f32,
         uv_h: 0.0585938f32,
         width: 2e+01f32,
@@ -1182,7 +1182,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // '~'
     Some(Glyph {
         uv_x: 0.878906f32,
-        uv_y: 0.298828f32,
+        uv_y: 0.330078f32,
         uv_w: 0.0527344f32,
         uv_h: 0.0273438f32,
         width: 3e+01f32,
@@ -1191,7 +1191,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         x_offset: 0e+00f32,
         y_offset: 0e+00f32,
     }),
-];
+];    
 
 static mut FONT_STORAGE: MaybeUninit<BitmapFont> = MaybeUninit::uninit();
 static FONT: AtomicPtr<BitmapFont> = AtomicPtr::new(core::ptr::null_mut());
@@ -1465,6 +1465,20 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
             batch.begin_frame();
             draw_xmb_text(batch, font, w, h);
             batch.end_frame(&matrix, time, 0.0, 0.0);
+        }
+
+                // --- 🔬 اختبار: ارسم الأطلس كاملاً كخلفية شفافة ---
+        let font_ptr = FONT.load(Ordering::Acquire);
+        if !font_ptr.is_null() {
+            let font = &*font_ptr;
+            batch.begin_frame();
+            batch.set_texture(&font.atlas);
+            // ارسم الأطلس كاملاً في وسط الشاشة بحجم 200×200
+            let atlas_rect = Rect::from_coords(w * 0.5 - 100.0, h * 0.5 - 100.0, 200.0, 200.0);
+            let full_uv = Rect::from_coords(0.0, 0.0, 1.0, 1.0);
+            batch.draw_quad(atlas_rect, full_uv, Color::WHITE);
+            batch.end_frame(&matrix, time, 0.0, 0.0);
+            logfox!("ZAVOGLES", "DEBUG: Drew full atlas at center");
         }
 
         // --- SWAP ---

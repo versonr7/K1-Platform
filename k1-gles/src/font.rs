@@ -80,7 +80,7 @@ pub fn draw_text<const MAX_VERTICES: usize, const MAX_INDICES: usize>(
             let w = g.width * scale;
             let h = g.height * scale;
 
-            // ✅ استخدم UV مباشرة من السكريبت (ما يحتاج قلب هنا)
+            // ✅ لا قلب هنا! الشادر يتولى الأمر
             let uv = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
             let rect = Rect::from_coords(x_pos, y_pos, w, h);
 

@@ -479,8 +479,9 @@ void main() {
     vec2 pos = a_pos;
     pos.y += sin(pos.x * u_wave_freq + u_time) * u_wave_amp;
     gl_Position = u_matrix * vec4(pos, 0.0, 1.0);
-    v_uv = a_uv;
-    v_color = a_color;   // ← FIXED: removed / 255.0
+    // ✅ اقلب V فقط: PIL top-down → OpenGL bottom-up
+    v_uv = vec2(a_uv.x, 1.0 - a_uv.y);
+    v_color = a_color;
 }
 "#;
 
@@ -1124,11 +1125,21 @@ mod tests {
         let b = Buffer::new(GL_ARRAY_BUFFER).unwrap();
         assert!(b.handle() > 0);
     }
-    #[test]
-    fn test_texture_create() {
-        let t = Texture::new().unwrap();
-        assert!(t.handle() > 0);
-    }
+#[test]
+fn test_texture_create() {
+    let t = Texture::new().unwrap();
+    assert!(t.handle() > 0);
+}
+
+#[test]
+fn test_texture_upload_size() {
+    let t = Texture::new().unwrap();
+    let data: [u8; 16] = [
+        255, 0, 0, 255,   0, 255, 0, 255,
+        0, 0, 255, 255,   255, 255, 255, 255,
+    ];
+    assert!(t.upload_rgba(2, 2, &data).is_ok());
+}
     #[test]
     fn test_batch_create() {
         let br = BatchRenderer::<400, 600>::new(); // 100 quads
