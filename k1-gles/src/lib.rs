@@ -482,7 +482,7 @@ void main() {
     v_uv = a_uv;           // ✅ بدون قلب
     v_color = a_color;
 }
-"#;;
+"#;
 
 pub const WAVE_FRAGMENT_SHADER: &str = r#"
 precision mediump float;
