@@ -1439,33 +1439,34 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
         batch.end_frame(&matrix, time, 0.0, 0.0);
 
         // --- XMB TEXT (الخط) ---
-        let font_ptr2 = FONT.load(Ordering::Acquire);
-        if font_ptr2.is_null() {
-            match BitmapFont::from_atlas_data(
-                FONT_ATLAS_BYTES,
-                FONT_ATLAS_W,
-                FONT_ATLAS_H,
-                FONT_GLYPHS,
-                32.0, // line_height
-            ) {
-                Ok(font) => {
-                    FONT_STORAGE.write(font);
-                    FONT.store(FONT_STORAGE.as_mut_ptr(), Ordering::Release);
-                    logfox!("ZAVOGLES", "Font loaded OK");
-                }
-                Err(e) => {
-                    logfox!("ZAVOGLES", "ERROR: Font init failed: {}", e);
-                }
-            }
+let font_ptr2 = FONT.load(Ordering::Acquire);
+if font_ptr2.is_null() {
+    match BitmapFont::from_atlas_data(
+        FONT_ATLAS_BYTES,
+        FONT_ATLAS_W,
+        FONT_ATLAS_H,
+        FONT_GLYPHS,
+        32.0,
+    ) {
+        Ok(font) => {
+            FONT_STORAGE.write(font);
+            FONT.store(FONT_STORAGE.as_mut_ptr(), Ordering::Release);
+            logfox!("ZAVOGLES", "Font loaded OK");
         }
+        Err(e) => {
+            logfox!("ZAVOGLES", "ERROR: Font init failed: {}", e);
+        }
+    }
+}
 
-        let font_ptr_final = FONT.load(Ordering::Acquire);
-        if !font_ptr_final.is_null() {
-            let font = &*font_ptr_final;
-            batch.begin_frame();
-            draw_xmb_text(batch, font, w, h);
-            batch.end_frame(&matrix, time, 0.0, 0.0);
-        }
+// ارسم النص (يجب أن يكون بعد التحميل)
+let font_ptr_final = FONT.load(Ordering::Acquire);
+if !font_ptr_final.is_null() {
+    let font = &*font_ptr_final;
+    batch.begin_frame();
+    draw_xmb_text(batch, font, w, h);
+    batch.end_frame(&matrix, time, 0.0, 0.0);
+}
 
         // --- SWAP ---
         if RUNNING.load(Ordering::Acquire) {
