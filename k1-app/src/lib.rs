@@ -1191,7 +1191,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         x_offset: 0e+00f32,
         y_offset: 0e+00f32,
     }),
-];    
+];
 
 static mut FONT_STORAGE: MaybeUninit<BitmapFont> = MaybeUninit::uninit();
 static FONT: AtomicPtr<BitmapFont> = AtomicPtr::new(core::ptr::null_mut());
@@ -1467,18 +1467,18 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
             batch.end_frame(&matrix, time, 0.0, 0.0);
         }
 
-      // --- 🔬 اختبار: ارسم الأطلس كاملاً في المنتصف ---
-let font_ptr_test = FONT.load(Ordering::Acquire);
-if !font_ptr_test.is_null() {
-    let font_test = &*font_ptr_test;
-    batch.begin_frame();
-    batch.set_texture(&font_test.atlas);
-    let atlas_rect = Rect::from_coords(w * 0.5 - 100.0, h * 0.5 - 100.0, 200.0, 200.0);
-    let full_uv = Rect::from_coords(0.0, 0.0, 1.0, 1.0);
-    batch.draw_quad(atlas_rect, full_uv, Color::WHITE);
-    batch.end_frame(&matrix, time, 0.0, 0.0);
-    logfox!("ZAVOGLES", "DEBUG: Drew full atlas at center");
-}
+        // --- 🔬 اختبار: ارسم الأطلس كاملاً في المنتصف ---
+        let font_ptr_test = FONT.load(Ordering::Acquire);
+        if !font_ptr_test.is_null() {
+            let font_test = &*font_ptr_test;
+            batch.begin_frame();
+            batch.set_texture(&font_test.atlas);
+            let atlas_rect = Rect::from_coords(w * 0.5 - 100.0, h * 0.5 - 100.0, 200.0, 200.0);
+            let full_uv = Rect::from_coords(0.0, 0.0, 1.0, 1.0);
+            batch.draw_quad(atlas_rect, full_uv, Color::WHITE);
+            batch.end_frame(&matrix, time, 0.0, 0.0);
+            logfox!("ZAVOGLES", "DEBUG: Drew full atlas at center");
+        }
         // --- SWAP ---
         if RUNNING.load(Ordering::Acquire) {
             if let Err(e) = ctx.swap_buffers() {
