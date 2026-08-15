@@ -1468,6 +1468,14 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
             batch.end_frame(&matrix, time, 0.0, 0.0);
         }
 
+              // --- 🔬 اختبار رسم حرف 'A' ---
+        // نرسمه بعد كل العناصر لكي يظهر فوقها
+        batch.begin_frame();
+        let uv_a = Rect::from_coords(0.072, 0.142, 0.043, 0.045);
+        let rect_a = Rect::from_coords(w * 0.5, h * 0.5, 100.0, 100.0);
+        batch.draw_quad(rect_a, uv_a, Color::WHITE);
+        batch.end_frame(&matrix, time, 0.0, 0.0);
+
         // --- SWAP ---
         if RUNNING.load(Ordering::Acquire) {
             if let Err(e) = ctx.swap_buffers() {
