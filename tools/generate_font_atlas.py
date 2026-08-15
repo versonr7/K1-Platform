@@ -91,7 +91,7 @@ def main():
         glyph_data.append({
             'char': ch, 'uv_x': uv_x, 'uv_y': uv_y, 'uv_w': uv_w, 'uv_h': uv_h,
             'width': float(tw), 'height': float(th), 'advance': advance,
-            'x_offset': 0.0, 'y_offset': 0.0,
+            'x_offset': 0.0, 'y_offset': -float(ascent),
         })
 
     # حفظ الأطلس
