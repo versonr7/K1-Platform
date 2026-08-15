@@ -1519,7 +1519,7 @@ fn draw_xmb_text(batch: &mut BatchRenderer<400, 600>, font: &BitmapFont, w: f32,
         let x = start_x + (i as f32 * spacing);
         let text_w = font.measure_text(cat, scale);
         let text_x = x - text_w / 2.0;
-        let text_y = y + (font.line_height * scale) * 0.2;
+        let text_y = y - (font.line_height * scale) / 2.0;
 
         let selected = SELECTED.load(Ordering::Acquire);
         let is_selected = i as i32 == selected;

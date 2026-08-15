@@ -76,14 +76,12 @@ pub fn draw_text<const MAX_VERTICES: usize, const MAX_INDICES: usize>(
     for c in text.chars() {
         if let Some(g) = font.glyph_for(c) {
             let x_pos = x + g.x_offset * scale;
-            let y_pos = y + g.y_offset * scale;
-            let w = g.width * scale;
-            let h = g.height * scale;
-            // ✅ قلب UV عمودياً: PIL top-down → OpenGL bottom-up
-            let flipped_v = 1.0 - g.uv_y - g.uv_h;
-            let uv = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
-            let rect = Rect::from_coords(x_pos, y_pos, w, h);
-            batch.draw_quad(rect, uv, color);
+let y_pos = y;  // y هو أعلى المستطيل، وليس خط الأساس
+let w = g.width * scale;
+let h = g.height * scale;
+let uv = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
+let rect = Rect::from_coords(x_pos, y_pos, w, h);
+batch.draw_quad(rect, uv, color);
             x += g.advance * scale;
         }
     }
