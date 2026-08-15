@@ -817,7 +817,81 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 8e+00f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-      // 'f'
+        y_offset: -3e+01f32,
+    }),
+    // '`'
+    Some(Glyph {
+        uv_x: 0.015625f32,
+        uv_y: 0.261719f32,
+        uv_w: 0.03125f32,
+        uv_h: 0.0507812f32,
+        width: 2e+01f32,
+        height: 3e+01f32,
+        advance: 2e+01f32,
+        x_offset: 0e+00f32,
+        y_offset: -3e+01f32,
+    }),
+    // 'a'
+    Some(Glyph {
+        uv_x: 0.0742188f32,
+        uv_y: 0.277344f32,
+        uv_w: 0.0390625f32,
+        uv_h: 0.0351562f32,
+        width: 2e+01f32,
+        height: 2e+01f32,
+        advance: 2e+01f32,
+        x_offset: 0e+00f32,
+        y_offset: -3e+01f32,
+    }),
+    // 'b'
+    Some(Glyph {
+        uv_x: 0.136719f32,
+        uv_y: 0.265625f32,
+        uv_w: 0.0390625f32,
+        uv_h: 0.046875f32,
+        width: 2e+01f32,
+        height: 2e+01f32,
+        advance: 2e+01f32,
+        x_offset: 0e+00f32,
+        y_offset: -3e+01f32,
+    }),
+    // 'c'
+    Some(Glyph {
+        uv_x: 0.201172f32,
+        uv_y: 0.277344f32,
+        uv_w: 0.0351562f32,
+        uv_h: 0.0351562f32,
+        width: 2e+01f32,
+        height: 2e+01f32,
+        advance: 2e+01f32,
+        x_offset: 0e+00f32,
+        y_offset: -3e+01f32,
+    }),
+    // 'd'
+    Some(Glyph {
+        uv_x: 0.261719f32,
+        uv_y: 0.265625f32,
+        uv_w: 0.0390625f32,
+        uv_h: 0.046875f32,
+        width: 2e+01f32,
+        height: 2e+01f32,
+        advance: 2e+01f32,
+        x_offset: 0e+00f32,
+        y_offset: -3e+01f32,
+    }),
+    // 'e'
+    Some(Glyph {
+        uv_x: 0.324219f32,
+        uv_y: 0.277344f32,
+        uv_w: 0.0390625f32,
+        uv_h: 0.0351562f32,
+        width: 2e+01f32,
+        height: 2e+01f32,
+        advance: 2e+01f32,
+        x_offset: 0e+00f32,
+        y_offset: -3e+01f32,
+    }),
+    // 'f'
     Some(Glyph {
         uv_x: 0.394531f32,
         uv_y: 0.265625f32,
@@ -1119,7 +1193,184 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     }),
 ];
 
- let Err(e) = ctx.make_current() {
+static mut FONT_STORAGE: MaybeUninit<BitmapFont> = MaybeUninit::uninit();
+static FONT: AtomicPtr<BitmapFont> = AtomicPtr::new(core::ptr::null_mut());
+
+// ===== JNI EXPORTS =====
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnRenderThreadExit(
+    _env: *mut c_void,
+    _class: *mut c_void,
+) {
+    unsafe {
+        // نسقط BatchRenderer أولًا (يحتاج سياق GL ساريًا)
+        if !BATCH.load(Ordering::Relaxed).is_null() {
+            core::ptr::drop_in_place(BATCH_STORAGE.as_mut_ptr());
+            BATCH.store(core::ptr::null_mut(), Ordering::Release);
+        }
+        // ثم نسقط GlContext (الذي بداخله NativeWindow وسياق EGL)
+        if !GL_CTX.load(Ordering::Relaxed).is_null() {
+            core::ptr::drop_in_place(GL_CTX_STORAGE.as_mut_ptr());
+            GL_CTX.store(core::ptr::null_mut(), Ordering::Release);
+        }
+        INITIALIZED.store(false, Ordering::Release);
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnCreate(
+    _env: *mut c_void,
+    _class: *mut c_void,
+) {
+    logfox!("ZAVOGLES", "Native onCreate");
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnSurfaceCreated(
+    _env: *mut c_void,
+    _class: *mut c_void,
+    surface: *mut c_void,
+) {
+    logfox!("ZAVOGLES", "Native surfaceCreated");
+
+    unsafe {
+        let anw = k1_sys::ANativeWindow_fromSurface(_env, surface);
+        if anw.is_null() {
+            logfox!("ZAVOGLES", "ERROR: ANativeWindow_fromSurface returned null");
+            return;
+        }
+
+        if let Some(win) = NativeWindow::from_raw(anw) {
+            // 1. اقرأ الأبعاد قبل نقل ملكية win
+            let w = win.width();
+            let h = win.height();
+
+            // 2. مرر win كقيمة (وليس كمرجع)
+            match GlContext::from_window(win) {
+                Ok(ctx) => {
+                    GL_CTX_STORAGE.write(ctx);
+                    GL_CTX.store(GL_CTX_STORAGE.as_mut_ptr(), Ordering::Release);
+
+                    // لم نعد ننشئ BatchRenderer هنا، بل على خيط الرسم
+
+                    WIDTH.store(w, Ordering::Release);
+                    HEIGHT.store(h, Ordering::Release);
+                    INITIALIZED.store(true, Ordering::Release);
+                    RUNNING.store(true, Ordering::Release);
+
+                    logfox!("ZAVOGLES", "EGL context ready: {}x{}", w, h);
+                }
+                Err(e) => logfox!("ZAVOGLES", "ERROR: GlContext failed: {}", e),
+            }
+        } else {
+            logfox!("ZAVOGLES", "ERROR: NativeWindow::from_raw failed");
+        }
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnSurfaceChanged(
+    _env: *mut c_void,
+    _class: *mut c_void,
+    width: i32,
+    height: i32,
+) {
+    logfox!("ZAVOGLES", "Native surfaceChanged: {}x{}", width, height);
+    WIDTH.store(width, Ordering::Release);
+    HEIGHT.store(height, Ordering::Release);
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnSurfaceDestroyed(
+    _env: *mut c_void,
+    _class: *mut c_void,
+) {
+    logfox!("ZAVOGLES", "Native surfaceDestroyed");
+    RUNNING.store(false, Ordering::Release);
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnPause(
+    _env: *mut c_void,
+    _class: *mut c_void,
+) {
+    logfox!("ZAVOGLES", "Native onPause");
+    RUNNING.store(false, Ordering::Release);
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnResume(
+    _env: *mut c_void,
+    _class: *mut c_void,
+) {
+    logfox!("ZAVOGLES", "Native onResume");
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnDestroy(
+    _env: *mut c_void,
+    _class: *mut c_void,
+) {
+    logfox!("ZAVOGLES", "Native onDestroy");
+    RUNNING.store(false, Ordering::Release);
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnTouch(
+    _env: *mut c_void,
+    _class: *mut c_void,
+    x: f32,
+    y: f32,
+    action: i32,
+) {
+    if action == 0 {
+        // ACTION_DOWN
+        let w = WIDTH.load(Ordering::Acquire) as f32;
+        let current = SELECTED.load(Ordering::Relaxed);
+
+        if x < w * 0.33 {
+            SELECTED.store(0.max(current - 1), Ordering::Release); // انتقل لليسار
+        } else if x > w * 0.66 {
+            SELECTED.store(2.min(current + 1), Ordering::Release); // انتقل لليمين
+        }
+
+        logfox!(
+            "ZAVOGLES",
+            "Selected category: {}",
+            SELECTED.load(Ordering::Relaxed)
+        );
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
+    _env: *mut c_void,
+    _class: *mut c_void,
+) {
+    if FRAME_LOCK
+        .compare_exchange(false, true, Ordering::Acquire, Ordering::Acquire)
+        .is_err()
+    {
+        return;
+    }
+
+    if !RUNNING.load(Ordering::Acquire) {
+        FRAME_LOCK.store(false, Ordering::Release);
+        return;
+    }
+
+    unsafe {
+        let ctx_ptr = GL_CTX.load(Ordering::Acquire);
+        if ctx_ptr.is_null() {
+            FRAME_LOCK.store(false, Ordering::Release);
+            return;
+        }
+
+        let ctx = &mut *ctx_ptr;
+
+        let batch_ptr = BATCH.load(Ordering::Acquire);
+        if batch_ptr.is_null() {
+            if let Err(e) = ctx.make_current() {
                 logfox!("ZAVOGLES", "ERROR: make_current failed: {}", e);
                 FRAME_LOCK.store(false, Ordering::Release);
                 return;
