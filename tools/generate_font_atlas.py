@@ -20,8 +20,6 @@ def main():
         return
 
     font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
-    ascent, descent = font.getmetrics()
-    
     atlas = Image.new("RGBA", (ATLAS_SIZE, ATLAS_SIZE), (0, 0, 0, 0))
     draw = ImageDraw.Draw(atlas)
 
@@ -37,70 +35,44 @@ def main():
         cell_x = col * cell_w
         cell_y = row * cell_h
 
-        # --- معالجة خاصة للمسافة والأحرف الفارغة ---
-        if ch == ' ':
-            # نعطيها UV صالح يشير إلى منتصف الخلية الأولى مثلًا
-            uv_x = (cell_x + cell_w/2) / ATLAS_SIZE
-            uv_y = (cell_y + cell_h/2) / ATLAS_SIZE
-            glyph_data.append({
-                'char': ' ', 'uv_x': uv_x, 'uv_y': uv_y, 'uv_w': 0.0, 'uv_h': 0.0,
-                'width': 0.0, 'height': 0.0, 'advance': float(FONT_SIZE * 0.4),
-                'x_offset': 0.0, 'y_offset': 0.0,
-            })
-            continue
-
-        # --- حساب bbox ---
+        # رسم الحرف في منتصف الخلية (بدون تعقيدات)
         bbox = draw.textbbox((0, 0), ch, font=font)
         tw = bbox[2] - bbox[0]
         th = bbox[3] - bbox[1]
-        if tw == 0 or th == 0:
-            tw, th = 1, 1  # لا نريد صفرًا
-
-        # --- إيجاد موضع الرسم بحيث يتمركز أفقياً وعمودياً داخل الخلية ---
-        # الأساس: نريد خط الأساس في منتصف الخلية تقريباً
-        baseline_y = cell_y + (cell_h - (ascent + descent)) // 2 + ascent
         draw_x = cell_x + (cell_w - tw) // 2 - bbox[0]
-        draw_y = baseline_y - bbox[1]
-
-        # --- القص الجبري للحدود (هذا هو السحر) ---
-        # نضمن أن draw_x بين cell_x و cell_x+cell_w-tw
-        if draw_x < cell_x:
-            draw_x = cell_x
-        if draw_x + tw > cell_x + cell_w:
-            draw_x = (cell_x + cell_w) - tw
-        # نضمن أن draw_y بين cell_y و cell_y+cell_h-th
-        if draw_y < cell_y:
-            draw_y = cell_y
-        if draw_y + th > cell_y + cell_h:
-            draw_y = (cell_y + cell_h) - th
-
-        # --- رسم الحرف ---
+        draw_y = cell_y + (cell_h - th) // 2 - bbox[1]
         draw.text((draw_x, draw_y), ch, font=font, fill=(255, 255, 255, 255))
 
-        # --- UV من دون خوف ---
-        uv_x = draw_x / ATLAS_SIZE
-        uv_y = draw_y / ATLAS_SIZE
-        uv_w = tw / ATLAS_SIZE
-        uv_h = th / ATLAS_SIZE
+        # UV بسيط: الخلية كاملة
+        uv_x = cell_x / ATLAS_SIZE
+        uv_y = cell_y / ATLAS_SIZE
+        uv_w = cell_w / ATLAS_SIZE
+        uv_h = cell_h / ATLAS_SIZE
 
-        try:
-            advance = float(font.getlength(ch))
-        except Exception:
-            advance = float(tw + 2)
+        # الأبعاد: نستخدم حجم الخلية للرسم
+        width = float(cell_w)
+        height = float(cell_h)
+        advance = float(font.getlength(ch)) if ch != ' ' else float(FONT_SIZE * 0.4)
 
         glyph_data.append({
-            'char': ch, 'uv_x': uv_x, 'uv_y': uv_y, 'uv_w': uv_w, 'uv_h': uv_h,
-            'width': float(tw), 'height': float(th), 'advance': advance,
-            'x_offset': 0.0, 'y_offset': 0.0,   # بدلاً من -float(ascent)
+            'char': ch,
+            'uv_x': uv_x,
+            'uv_y': uv_y,
+            'uv_w': uv_w,
+            'uv_h': uv_h,
+            'width': width,
+            'height': height,
+            'advance': advance,
+            'x_offset': 0.0,
+            'y_offset': 0.0,
         })
 
-    # حفظ الأطلس
+    # حفظ الأطلس بدون قلب (سنقلب في Rust)
     with open(os.path.join(OUTPUT_DIR, "font_atlas.rgba"), "wb") as f:
         f.write(atlas.tobytes())
     atlas.save(os.path.join(OUTPUT_DIR, "font_atlas.png"))
     print(f"Saved atlas: {ATLAS_SIZE}x{ATLAS_SIZE}")
 
-    # كتابة جدول الحروف
     with open(os.path.join(OUTPUT_DIR, "font_glyphs.rs"), "w") as f:
         f.write("// Auto-generated\n")
         f.write("use k1_gles::font::Glyph;\n\n")

@@ -80,9 +80,11 @@ pub fn draw_text<const MAX_VERTICES: usize, const MAX_INDICES: usize>(
             let w = g.width * scale;
             let h = g.height * scale;
 
-            // ✅ قلب UV عمودياً: PIL top-down → OpenGL bottom-up
-            let uv = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
-            let rect = Rect::from_coords(x_pos, y_pos, w, h);
+            let flipped_v = 1.0 - g.uv_y - g.uv_h;
+let uv = Rect::from_coords(g.uv_x, flipped_v, g.uv_w, g.uv_h);
+let y_pos = y;
+let rect = Rect::from_coords(x, y_pos, g.width * scale, g.height * scale);
+batch.draw_quad(rect, uv, color);
 
             batch.draw_quad(rect, uv, color);
             x += g.advance * scale;
