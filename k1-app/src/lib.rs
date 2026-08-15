@@ -73,7 +73,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '"'
     Some(Glyph {
@@ -85,7 +85,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '#'
     Some(Glyph {
@@ -97,7 +97,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '$'
     Some(Glyph {
@@ -109,7 +109,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '%'
     Some(Glyph {
@@ -121,7 +121,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '&'
     Some(Glyph {
@@ -133,7 +133,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // "'"
     Some(Glyph {
@@ -145,7 +145,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 9e+00f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '('
     Some(Glyph {
@@ -157,7 +157,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // ')'
     Some(Glyph {
@@ -169,7 +169,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '*'
     Some(Glyph {
@@ -181,7 +181,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '+'
     Some(Glyph {
@@ -193,7 +193,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // ','
     Some(Glyph {
@@ -205,7 +205,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 8e+00f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '-'
     Some(Glyph {
@@ -217,7 +217,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 1e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '.'
     Some(Glyph {
@@ -229,7 +229,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 4e+00f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '/'
     Some(Glyph {
@@ -241,7 +241,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '0'
     Some(Glyph {
@@ -253,7 +253,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '1'
     Some(Glyph {
@@ -265,7 +265,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '2'
     Some(Glyph {
@@ -277,7 +277,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '3'
     Some(Glyph {
@@ -289,7 +289,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '4'
     Some(Glyph {
@@ -301,7 +301,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '5'
     Some(Glyph {
@@ -313,7 +313,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '6'
     Some(Glyph {
@@ -325,7 +325,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '7'
     Some(Glyph {
@@ -337,7 +337,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '8'
     Some(Glyph {
@@ -349,7 +349,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '9'
     Some(Glyph {
@@ -361,7 +361,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // ':'
     Some(Glyph {
@@ -373,7 +373,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // ';'
     Some(Glyph {
@@ -385,7 +385,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '<'
     Some(Glyph {
@@ -397,7 +397,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '='
     Some(Glyph {
@@ -409,7 +409,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '>'
     Some(Glyph {
@@ -421,7 +421,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '?'
     Some(Glyph {
@@ -433,7 +433,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '@'
     Some(Glyph {
@@ -445,7 +445,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'A'
     Some(Glyph {
@@ -457,7 +457,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'B'
     Some(Glyph {
@@ -469,7 +469,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'C'
     Some(Glyph {
@@ -481,7 +481,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'D'
     Some(Glyph {
@@ -493,7 +493,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'E'
     Some(Glyph {
@@ -505,7 +505,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'F'
     Some(Glyph {
@@ -517,7 +517,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'G'
     Some(Glyph {
@@ -529,7 +529,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'H'
     Some(Glyph {
@@ -541,7 +541,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'I'
     Some(Glyph {
@@ -553,7 +553,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 9e+00f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'J'
     Some(Glyph {
@@ -565,7 +565,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 9e+00f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'K'
     Some(Glyph {
@@ -577,7 +577,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'L'
     Some(Glyph {
@@ -589,7 +589,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'M'
     Some(Glyph {
@@ -601,7 +601,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'N'
     Some(Glyph {
@@ -613,7 +613,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'O'
     Some(Glyph {
@@ -625,7 +625,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'P'
     Some(Glyph {
@@ -637,7 +637,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'Q'
     Some(Glyph {
@@ -649,7 +649,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'R'
     Some(Glyph {
@@ -661,7 +661,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'S'
     Some(Glyph {
@@ -673,7 +673,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'T'
     Some(Glyph {
@@ -685,7 +685,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'U'
     Some(Glyph {
@@ -697,7 +697,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'V'
     Some(Glyph {
@@ -709,7 +709,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'W'
     Some(Glyph {
@@ -721,7 +721,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'X'
     Some(Glyph {
@@ -733,7 +733,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'Y'
     Some(Glyph {
@@ -745,7 +745,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'Z'
     Some(Glyph {
@@ -757,7 +757,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '['
     Some(Glyph {
@@ -769,7 +769,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '\\'
     Some(Glyph {
@@ -781,7 +781,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // ']'
     Some(Glyph {
@@ -793,7 +793,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '^'
     Some(Glyph {
@@ -805,7 +805,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '_'
     Some(Glyph {
@@ -817,7 +817,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 8e+00f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '`'
     Some(Glyph {
@@ -829,7 +829,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'a'
     Some(Glyph {
@@ -841,7 +841,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'b'
     Some(Glyph {
@@ -853,7 +853,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'c'
     Some(Glyph {
@@ -865,7 +865,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'd'
     Some(Glyph {
@@ -877,7 +877,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'e'
     Some(Glyph {
@@ -889,7 +889,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'f'
     Some(Glyph {
@@ -901,7 +901,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'g'
     Some(Glyph {
@@ -913,7 +913,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'h'
     Some(Glyph {
@@ -925,7 +925,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'i'
     Some(Glyph {
@@ -937,7 +937,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 9e+00f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'j'
     Some(Glyph {
@@ -949,7 +949,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 9e+00f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'k'
     Some(Glyph {
@@ -961,7 +961,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'l'
     Some(Glyph {
@@ -973,7 +973,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 9e+00f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'm'
     Some(Glyph {
@@ -985,7 +985,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'n'
     Some(Glyph {
@@ -997,7 +997,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'o'
     Some(Glyph {
@@ -1009,7 +1009,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'p'
     Some(Glyph {
@@ -1021,7 +1021,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'q'
     Some(Glyph {
@@ -1033,7 +1033,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'r'
     Some(Glyph {
@@ -1045,7 +1045,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 's'
     Some(Glyph {
@@ -1057,7 +1057,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 't'
     Some(Glyph {
@@ -1069,7 +1069,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'u'
     Some(Glyph {
@@ -1081,7 +1081,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'v'
     Some(Glyph {
@@ -1093,7 +1093,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'w'
     Some(Glyph {
@@ -1105,7 +1105,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'x'
     Some(Glyph {
@@ -1117,7 +1117,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'y'
     Some(Glyph {
@@ -1129,7 +1129,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // 'z'
     Some(Glyph {
@@ -1141,7 +1141,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 2e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '{'
     Some(Glyph {
@@ -1153,7 +1153,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '|'
     Some(Glyph {
@@ -1165,7 +1165,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 1e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '}'
     Some(Glyph {
@@ -1177,7 +1177,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 3e+01f32,
         advance: 2e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
     // '~'
     Some(Glyph {
@@ -1189,7 +1189,7 @@ pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
         height: 1e+01f32,
         advance: 3e+01f32,
         x_offset: 0e+00f32,
-        y_offset: -3e+01f32,
+        y_offset: 0e+00f32,
     }),
 ];
 
@@ -1519,7 +1519,7 @@ fn draw_xmb_text(batch: &mut BatchRenderer<400, 600>, font: &BitmapFont, w: f32,
         let x = start_x + (i as f32 * spacing);
         let text_w = font.measure_text(cat, scale);
         let text_x = x - text_w / 2.0;
-        let text_y = y - (font.line_height * scale) * 0.25;
+        let text_y = y + (font.line_height * scale) * 0.2;
 
         let selected = SELECTED.load(Ordering::Acquire);
         let is_selected = i as i32 == selected;
