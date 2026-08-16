@@ -1526,13 +1526,13 @@ fn draw_xmb_text(batch: &mut BatchRenderer<400, 600>, font: &BitmapFont, w: f32,
     let y = h * 0.55;
     let spacing = w * 0.30;
     let start_x = w * 0.20;
-    let scale = (h * 0.035) / font.line_height;
+    let scale = 1.0; // جرب 1.0
 
     for (i, cat) in categories.iter().enumerate() {
         let x = start_x + (i as f32 * spacing);
         let text_w = font.measure_text(cat, scale);
         let text_x = x - text_w / 2.0;
-        let text_y = y - (font.line_height * scale) * 0.35;
+        let text_y = y - 20.0;
 
         let selected = SELECTED.load(Ordering::Acquire);
         let is_selected = i as i32 == selected;
