@@ -1473,12 +1473,14 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
         let font_test_ptr = FONT.load(Ordering::Acquire);
 if !font_test_ptr.is_null() {
     let font_test = &*font_test_ptr;
-    batch.begin_frame();
-    batch.set_texture(&font_test.atlas);
-    let uv_a = Rect::from_coords(0.072, 0.142, 0.043, 0.045);
-    let rect_a = Rect::from_coords(w * 0.5, h * 0.5, 100.0, 100.0);
-    batch.draw_quad(rect_a, uv_a, Color::WHITE);
-    batch.end_frame(&matrix, time, 0.0, 0.0);
+    if let Some(g) = font_test.glyph_for('A') {
+        batch.begin_frame();
+        batch.set_texture(&font_test.atlas);
+        let uv_a = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
+        let rect_a = Rect::from_coords(w * 0.5, h * 0.5, g.width * 2.0, g.height * 2.0);
+        batch.draw_quad(rect_a, uv_a, Color::WHITE);
+        batch.end_frame(&matrix, time, 0.0, 0.0);
+    }
 }
       
         // --- SWAP ---
@@ -1532,7 +1534,7 @@ fn draw_xmb_text(batch: &mut BatchRenderer<400, 600>, font: &BitmapFont, w: f32,
         let x = start_x + (i as f32 * spacing);
         let text_w = font.measure_text(cat, scale);
         let text_x = x - text_w / 2.0;
-        let text_y = y - 20.0;
+        let text_y = y - (font.line_height * scale) * 0.5;
 
         let selected = SELECTED.load(Ordering::Acquire);
         let is_selected = i as i32 == selected;
