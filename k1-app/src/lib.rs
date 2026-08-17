@@ -327,6 +327,22 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
             batch.end_frame(&matrix, time, 0.0, 0.0);
         }
       
+      // --- اختبار رسم حرف 'A' يدويًا ---
+let font_test_ptr = FONT.load(Ordering::Acquire);
+if !font_test_ptr.is_null() {
+    let font_test = &*font_test_ptr;
+    if let Some(g) = font_test.glyph_for('A') {
+        batch.begin_frame();
+        batch.set_texture(&font_test.atlas);
+        let flipped_v = 1.0 - g.uv_y - g.uv_h;
+        let uv_a = Rect::from_coords(g.uv_x, flipped_v, g.uv_w, g.uv_h);
+        let rect_a = Rect::from_coords(w * 0.5, h * 0.5, g.width * 2.0, g.height * 2.0);
+        batch.draw_quad(rect_a, uv_a, Color::WHITE);
+        batch.end_frame(&matrix, time, 0.0, 0.0);
+        logfox!("ZAVOGLES", "TEST: Drew A at center with flipped_v");
+    }
+}
+      
         // --- SWAP ---
         if RUNNING.load(Ordering::Acquire) {
             if let Err(e) = ctx.swap_buffers() {
