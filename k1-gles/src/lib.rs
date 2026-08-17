@@ -479,7 +479,7 @@ void main() {
     vec2 pos = a_pos;
     pos.y += sin(pos.x * u_wave_freq + u_time) * u_wave_amp;
     gl_Position = u_matrix * vec4(pos, 0.0, 1.0);
-    v_uv = vec2(a_uv.x, 1.0 - a_uv.y);           // ✅ بدون قلب
+    v_uv = a_uv;           // ✅ بدون قلب
     v_color = a_color;
 }
 "#;

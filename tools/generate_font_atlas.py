@@ -79,7 +79,7 @@ def main():
 
         # ✅ UV دائماً بين 0 و 1
         uv_x = draw_x / ATLAS_SIZE
-        uv_y = draw_y / ATLAS_SIZE
+        uv_y = (ATLAS_SIZE - draw_y - th) / ATLAS_SIZE
         uv_w = tw / ATLAS_SIZE
         uv_h = th / ATLAS_SIZE
 
