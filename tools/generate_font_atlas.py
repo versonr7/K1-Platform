@@ -20,6 +20,8 @@ def main():
         return
 
     font = ImageFont.truetype(FONT_PATH, FONT_SIZE)
+    ascent, descent = font.getmetrics()
+    
     atlas = Image.new("RGBA", (ATLAS_SIZE, ATLAS_SIZE), (0, 0, 0, 0))
     draw = ImageDraw.Draw(atlas)
 
@@ -35,29 +37,54 @@ def main():
         cell_x = col * cell_w
         cell_y = row * cell_h
 
-        # رسم الحرف في منتصف الخلية
+        if ch == ' ':
+            glyph_data.append({
+                'char': ' ',
+                'uv_x': 0.0,
+                'uv_y': 0.0,
+                'uv_w': 0.0,
+                'uv_h': 0.0,
+                'width': 0.0,
+                'height': 0.0,
+                'advance': float(FONT_SIZE * 0.4),
+                'x_offset': 0.0,
+                'y_offset': 0.0,
+            })
+            continue
+
+        # bbox الحقيقي للحرف
         bbox = draw.textbbox((0, 0), ch, font=font)
         tw = bbox[2] - bbox[0]
         th = bbox[3] - bbox[1]
-        draw_x = cell_x + (cell_w - tw) // 2 - bbox[0]
-        draw_y = cell_y + (cell_h - th) // 2 - bbox[1]
+
+        # مركز الحرف داخل الخلية
+        draw_x = cell_x + (cell_w - tw) // 2
+        draw_y = cell_y + (cell_h - th) // 2
+
+        # ✅ تأكد ما تطلع برا الخلية أبداً
+        if draw_x < cell_x:
+            draw_x = cell_x
+        if draw_y < cell_y:
+            draw_y = cell_y
+        if draw_x + tw > cell_x + cell_w:
+            draw_x = cell_x + cell_w - tw
+        if draw_y + th > cell_y + cell_h:
+            draw_y = cell_y + cell_h - th
+
+        # ✅ اجعلها دائماً موجبة
+        draw_x = max(0, draw_x)
+        draw_y = max(0, draw_y)
+
         draw.text((draw_x, draw_y), ch, font=font, fill=(255, 255, 255, 255))
 
-        # UV يقيس المساحة الفعلية للحرف داخل الخلية
+        # ✅ UV دائماً بين 0 و 1
         uv_x = draw_x / ATLAS_SIZE
         uv_y = draw_y / ATLAS_SIZE
         uv_w = tw / ATLAS_SIZE
         uv_h = th / ATLAS_SIZE
 
-        # الأبعاد الفعلية للحرف (وليس الخلية)
-        width = float(tw)
-        height = float(th)
-
-        # التقدم الأفقي: عرض الحرف الفعلي + مسافة صغيرة
-        if ch == ' ':
-            advance = float(FONT_SIZE * 0.4)
-        else:
-            advance = float(tw) + 1.5   # جرّب 1.5 أو 2.0
+        # ✅ advance = عرض الحرف الفعلي + 1.5 بكسل فراغ
+        advance = float(tw) + 1.5
 
         glyph_data.append({
             'char': ch,
@@ -65,19 +92,20 @@ def main():
             'uv_y': uv_y,
             'uv_w': uv_w,
             'uv_h': uv_h,
-            'width': width,
-            'height': height,
+            'width': float(tw),
+            'height': float(th),
             'advance': advance,
             'x_offset': 0.0,
             'y_offset': 0.0,
         })
 
-    # حفظ الأطلس بدون قلب (سنقلب في Rust إذا لزم)
+    # حفظ الأطلس
     with open(os.path.join(OUTPUT_DIR, "font_atlas.rgba"), "wb") as f:
         f.write(atlas.tobytes())
     atlas.save(os.path.join(OUTPUT_DIR, "font_atlas.png"))
     print(f"Saved atlas: {ATLAS_SIZE}x{ATLAS_SIZE}")
 
+    # كتابة font_glyphs.rs
     with open(os.path.join(OUTPUT_DIR, "font_glyphs.rs"), "w") as f:
         f.write("// Auto-generated\n")
         f.write("use k1_gles::font::Glyph;\n\n")
@@ -100,4 +128,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-  

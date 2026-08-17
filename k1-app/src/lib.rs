@@ -369,7 +369,7 @@ fn draw_xmb_buttons(batch: &mut BatchRenderer<400, 600>, w: f32, h: f32, _time: 
 
 fn draw_xmb_text(batch: &mut BatchRenderer<400, 600>, font: &BitmapFont, w: f32, h: f32) {
     let categories = ["Settings", "Games", "Media"];
-    let y = h * 0.55;
+    let y = h * 0.55;           // مركز الزر
     let spacing = w * 0.30;
     let start_x = w * 0.20;
     let scale = (h * 0.050) / font.line_height;
@@ -378,6 +378,7 @@ fn draw_xmb_text(batch: &mut BatchRenderer<400, 600>, font: &BitmapFont, w: f32,
         let x = start_x + (i as f32 * spacing);
         let text_w = font.measure_text(cat, scale);
         let text_x = x - text_w / 2.0;
+        // ✅ أعلى النص = مركز الزر - نصف ارتفاع النص
         let text_y = y - (font.line_height * scale) * 0.5;
 
         let selected = SELECTED.load(Ordering::Acquire);
