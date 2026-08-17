@@ -43,23 +43,21 @@ def main():
         draw_y = cell_y + (cell_h - th) // 2 - bbox[1]
         draw.text((draw_x, draw_y), ch, font=font, fill=(255, 255, 255, 255))
 
-        # UV بسيط: الخلية كاملة
-        uv_x = cell_x / ATLAS_SIZE
-        uv_y = cell_y / ATLAS_SIZE
-        uv_w = cell_w / ATLAS_SIZE
-        uv_h = cell_h / ATLAS_SIZE
+        # UV يقيس المساحة الفعلية للحرف داخل الخلية
+        uv_x = draw_x / ATLAS_SIZE
+        uv_y = draw_y / ATLAS_SIZE
+        uv_w = tw / ATLAS_SIZE
+        uv_h = th / ATLAS_SIZE
 
-        # الأبعاد: نستخدم حجم الخلية للرسم
-        width = float(cell_w)
-        height = float(cell_h)
+        # الأبعاد الفعلية للحرف (وليس الخلية)
+        width = float(tw)
+        height = float(th)
 
+        # التقدم الأفقي: عرض الحرف الفعلي + مسافة صغيرة
         if ch == ' ':
             advance = float(FONT_SIZE * 0.4)
         else:
-            try:
-                advance = float(font.getlength(ch))
-            except Exception:
-                advance = float(tw) * 1.05  # زيادة 5% فقط
+            advance = float(tw) + 1.5   # جرّب 1.5 أو 2.0
 
         glyph_data.append({
             'char': ch,
@@ -74,7 +72,7 @@ def main():
             'y_offset': 0.0,
         })
 
-    # حفظ الأطلس بدون قلب (سنقلب في Rust)
+    # حفظ الأطلس بدون قلب (سنقلب في Rust إذا لزم)
     with open(os.path.join(OUTPUT_DIR, "font_atlas.rgba"), "wb") as f:
         f.write(atlas.tobytes())
     atlas.save(os.path.join(OUTPUT_DIR, "font_atlas.png"))
@@ -102,3 +100,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+  

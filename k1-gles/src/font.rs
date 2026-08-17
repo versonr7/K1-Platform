@@ -1,8 +1,6 @@
 #![no_std]
 
-use core::ffi::c_int;
-use k1_math::{Color, Rect, Vec2};
-
+use k1_math::{Color, Rect};
 use crate::{BatchRenderer, Texture};
 
 #[derive(Debug, Clone, Copy)]
@@ -75,15 +73,8 @@ pub fn draw_text<const MAX_VERTICES: usize, const MAX_INDICES: usize>(
     batch.set_texture(&font.atlas);
     for c in text.chars() {
         if let Some(g) = font.glyph_for(c) {
-            let x_pos = x + g.x_offset * scale;
-            let y_pos = y + g.y_offset * scale;
-            let w = g.width * scale;
-            let h = g.height * scale;
-
+            let rect = Rect::from_coords(x, y, g.width * scale, g.height * scale);
             let uv = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
-            let y_pos = y;
-            let rect = Rect::from_coords(x, y_pos, g.width * scale, g.height * scale);
-
             batch.draw_quad(rect, uv, color);
             x += g.advance * scale;
         }
