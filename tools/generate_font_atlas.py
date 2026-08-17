@@ -56,7 +56,10 @@ def main():
         if ch == ' ':
             advance = float(FONT_SIZE * 0.4)
         else:
-            advance = float(tw) + 3.0
+            try:
+                advance = float(font.getlength(ch))
+            except Exception:
+                advance = float(tw) * 1.05  # زيادة 5% فقط
 
         glyph_data.append({
             'char': ch,
