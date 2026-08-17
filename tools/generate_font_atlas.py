@@ -35,7 +35,7 @@ def main():
         cell_x = col * cell_w
         cell_y = row * cell_h
 
-        # رسم الحرف في منتصف الخلية (بدون تعقيدات)
+        # رسم الحرف في منتصف الخلية
         bbox = draw.textbbox((0, 0), ch, font=font)
         tw = bbox[2] - bbox[0]
         th = bbox[3] - bbox[1]
@@ -52,7 +52,11 @@ def main():
         # الأبعاد: نستخدم حجم الخلية للرسم
         width = float(cell_w)
         height = float(cell_h)
-        advance = float(font.getlength(ch)) if ch != ' ' else float(FONT_SIZE * 0.4)
+
+        if ch == ' ':
+            advance = float(FONT_SIZE * 0.4)
+        else:
+            advance = float(tw) + 3.0
 
         glyph_data.append({
             'char': ch,
