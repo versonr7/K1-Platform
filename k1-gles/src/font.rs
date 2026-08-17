@@ -76,8 +76,7 @@ pub fn draw_text<const MAX_VERTICES: usize, const MAX_INDICES: usize>(
             // y هو أعلى المستطيل (top-left anchor)
             let rect = Rect::from_coords(x, y, g.width * scale, g.height * scale);
             // ✅ قلب UV عمودياً: PIL top-down → OpenGL bottom-up
-            let flipped_v = 1.0 - g.uv_y - g.uv_h;
-            let uv = Rect::from_coords(g.uv_x, flipped_v, g.uv_w, g.uv_h);
+            let uv_a = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
             batch.draw_quad(rect, uv, color);
             x += g.advance * scale;
         }
