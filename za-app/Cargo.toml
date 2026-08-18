@@ -1,26 +1,27 @@
 [package]
-name = "k1-app"
+name = "za-app"
 version = "0.1.0"
 edition = "2021"
 authors = ["versonr7"]
 description = "ZAVOGLES-GUI - Zero Allocation Vulkan OpenGL ES GUI"
-license = "MIT"
+license = "GPL-3.0-only"
 
 [lib]
-name = "k1_app"
+name = "za_app"
 crate-type = ["cdylib"]
 
 [dependencies]
-k1-math = { path = "../k1-math" }
-k1-sys = { path = "../k1-sys" }
-k1-gles = { path = "../k1-gles" }
+za-math = { path = "../za-math" }
+za-sys = { path = "../za-sys" }
+za-gles = { path = "../za-gles" }
+za-xmb = { path = "../za-xmb" }
 heapless = "0.9.3"
 libm = "0.2.16"
 
 [package.metadata.android]
 package = "com.versonr7.zavogles"
 build_targets = ["aarch64-linux-android"]
-java_sources = "java"  # ← ADD THIS! Points to k1-app/java/
+java_sources = "java"  # ← ADD THIS! Points to za-app/java/
 
 [package.metadata.android.sdk]
 min_sdk_version = 28

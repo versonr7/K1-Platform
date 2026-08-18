@@ -1,0 +1,14 @@
+[package]
+name = "za-sys"
+version = "0.1.0"
+edition = "2021"
+authors = ["versonr7"]
+description = "za Sys - Raw Android NDK FFI bindings"
+license = "GPL-3.0-only"
+
+[dependencies]
+za-math = { path = "../za-math" }
+
+[features]
+default = []
+mock = []

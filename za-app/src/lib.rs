@@ -6,18 +6,21 @@ mod glyphs_english;
 use glyphs_english::FONT_GLYPHS;
 
 use core::ffi::{c_int, c_void};
+use core::mem::MaybeUninit;
 use core::sync::atomic::{AtomicBool, AtomicI32, AtomicPtr, AtomicU32, Ordering};
-use k1_gles::font::{draw_text, BitmapFont, Glyph};
-use k1_gles::{BatchRenderer, GlContext};
-use k1_math::{Color, Mat4, Rect};
-use k1_sys::NativeWindow;
+
+use za_gles::font::{BitmapFont};
+use za_gles::{BatchRenderer, GlContext};
+use za_math::{Color, Mat4, Rect};
+use za_sys::NativeWindow;
+use za_xmb::XmbState;
 
 // ===== LOGGING =====
 #[macro_export]
 macro_rules! logfox {
     ($tag:expr, $msg:expr) => {
         {
-            k1_sys::android_log(k1_sys::LogLevel::Info, $tag, $msg);
+            za_sys::android_log(za_sys::LogLevel::Info, $tag, $msg);
         }
     };
     ($tag:expr, $($arg:tt)*) => {
@@ -25,21 +28,20 @@ macro_rules! logfox {
             use core::fmt::Write;
             let mut buf = heapless::String::<256>::new();
             let _ = core::write!(buf, $($arg)*);
-            k1_sys::android_log(k1_sys::LogLevel::Info, $tag, buf.as_str());
+            za_sys::android_log(za_sys::LogLevel::Info, $tag, buf.as_str());
         }
     };
 }
 
-use core::mem::MaybeUninit;
-
 // ===== STATE =====
-static SELECTED: AtomicI32 = AtomicI32::new(1); // 1 = العنصر الأوسط محدد
 static RUNNING: AtomicBool = AtomicBool::new(false);
 static WIDTH: AtomicI32 = AtomicI32::new(0);
 static HEIGHT: AtomicI32 = AtomicI32::new(0);
 static FRAME_COUNT: AtomicU32 = AtomicU32::new(0);
 static INITIALIZED: AtomicBool = AtomicBool::new(false);
 static FRAME_LOCK: AtomicBool = AtomicBool::new(false);
+
+static XMB_STATE: XmbState = XmbState::new();
 
 static mut GL_CTX_STORAGE: MaybeUninit<GlContext> = MaybeUninit::uninit();
 static GL_CTX: AtomicPtr<GlContext> = AtomicPtr::new(core::ptr::null_mut());
@@ -62,12 +64,10 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnRenderThre
     _class: *mut c_void,
 ) {
     unsafe {
-        // نسقط BatchRenderer أولًا (يحتاج سياق GL ساريًا)
         if !BATCH.load(Ordering::Relaxed).is_null() {
             core::ptr::drop_in_place(BATCH_STORAGE.as_mut_ptr());
             BATCH.store(core::ptr::null_mut(), Ordering::Release);
         }
-        // ثم نسقط GlContext (الذي بداخله NativeWindow وسياق EGL)
         if !GL_CTX.load(Ordering::Relaxed).is_null() {
             core::ptr::drop_in_place(GL_CTX_STORAGE.as_mut_ptr());
             GL_CTX.store(core::ptr::null_mut(), Ordering::Release);
@@ -93,24 +93,20 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnSurfaceCre
     logfox!("ZAVOGLES", "Native surfaceCreated");
 
     unsafe {
-        let anw = k1_sys::ANativeWindow_fromSurface(_env, surface);
+        let anw = za_sys::ANativeWindow_fromSurface(_env, surface);
         if anw.is_null() {
             logfox!("ZAVOGLES", "ERROR: ANativeWindow_fromSurface returned null");
             return;
         }
 
         if let Some(win) = NativeWindow::from_raw(anw) {
-            // 1. اقرأ الأبعاد قبل نقل ملكية win
             let w = win.width();
             let h = win.height();
 
-            // 2. مرر win كقيمة (وليس كمرجع)
             match GlContext::from_window(win) {
                 Ok(ctx) => {
                     GL_CTX_STORAGE.write(ctx);
                     GL_CTX.store(GL_CTX_STORAGE.as_mut_ptr(), Ordering::Release);
-
-                    // لم نعد ننشئ BatchRenderer هنا، بل على خيط الرسم
 
                     WIDTH.store(w, Ordering::Release);
                     HEIGHT.store(h, Ordering::Release);
@@ -179,24 +175,17 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnTouch(
     _env: *mut c_void,
     _class: *mut c_void,
     x: f32,
-    y: f32,
+    _y: f32,
     action: i32,
 ) {
     if action == 0 {
-        // ACTION_DOWN
         let w = WIDTH.load(Ordering::Acquire) as f32;
-        let current = SELECTED.load(Ordering::Relaxed);
-
-        if x < w * 0.33 {
-            SELECTED.store(0.max(current - 1), Ordering::Release); // انتقل لليسار
-        } else if x > w * 0.66 {
-            SELECTED.store(2.min(current + 1), Ordering::Release); // انتقل لليمين
-        }
+        XMB_STATE.handle_touch(x, w);
 
         logfox!(
             "ZAVOGLES",
             "Selected category: {}",
-            SELECTED.load(Ordering::Relaxed)
+            XMB_STATE.get_selected()
         );
     }
 }
@@ -249,7 +238,6 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
                 }
             }
 
-            // --- إبطال الخط القديم (إذا كان موجودًا) ---
             let font_ptr = FONT.load(Ordering::Acquire);
             if !font_ptr.is_null() {
                 core::ptr::drop_in_place(font_ptr);
@@ -273,31 +261,20 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
 
         // --- BACKGROUND ---
         batch.begin_frame();
-        let pulse = libm::sinf(time * 0.3) * 0.02;
-        batch.draw_quad(
-            Rect::from_coords(0.0, 0.0, w, h),
-            Rect::from_coords(0.0, 0.0, 1.0, 1.0),
-            Color::new(0.03 + pulse, 0.04 + pulse, 0.08 + pulse * 2.0, 1.0),
-        );
+        za_xmb::draw_background(batch, time, w, h);
         batch.end_frame(&matrix, time, 0.0, 0.0);
 
         // --- WAVE BAND ---
         batch.begin_frame();
-        let wave_y = h * 0.30;
-        let wave_height = h * 0.25;
-        batch.draw_quad(
-            Rect::from_coords(0.0, wave_y, w, wave_height),
-            Rect::from_coords(0.0, 0.0, 1.0, 1.0),
-            Color::new(0.1, 0.2, 0.4, 0.4),
-        );
+        za_xmb::draw_wave(batch, time, w, h);
         batch.end_frame(&matrix, time, 5.0, 0.015);
 
         // --- XMB BUTTONS ---
         batch.begin_frame();
-        draw_xmb_buttons(batch, w, h, time);
+        za_xmb::draw_xmb_buttons(batch, &XMB_STATE, w, h);
         batch.end_frame(&matrix, time, 0.0, 0.0);
 
-        // --- XMB TEXT (الخط) ---
+        // --- تحميل الخط إن لزم ---
         let font_ptr2 = FONT.load(Ordering::Acquire);
         if font_ptr2.is_null() {
             match BitmapFont::from_atlas_data(
@@ -318,31 +295,15 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
             }
         }
 
-        // ارسم النص (يجب أن يكون بعد التحميل)
+        // --- XMB TEXT ---
         let font_ptr_final = FONT.load(Ordering::Acquire);
         if !font_ptr_final.is_null() {
             let font = &*font_ptr_final;
             batch.begin_frame();
-            draw_xmb_text(batch, font, w, h);
+            za_xmb::draw_xmb_text(batch, &XMB_STATE, font, w, h);
             batch.end_frame(&matrix, time, 0.0, 0.0);
         }
-      
-      // --- اختبار رسم حرف 'A' يدويًا ---
-let font_test_ptr = FONT.load(Ordering::Acquire);
-if !font_test_ptr.is_null() {
-    let font_test = &*font_test_ptr;
-    if let Some(g) = font_test.glyph_for('A') {
-        batch.begin_frame();
-        batch.set_texture(&font_test.atlas);
-        let flipped_v = 1.0 - g.uv_y - g.uv_h;
-        let uv_a = Rect::from_coords(g.uv_x, flipped_v, g.uv_w, g.uv_h);
-        let rect_a = Rect::from_coords(w * 0.5, h * 0.5, g.width * 2.0, g.height * 2.0);
-        batch.draw_quad(rect_a, uv_a, Color::WHITE);
-        batch.end_frame(&matrix, time, 0.0, 0.0);
-        logfox!("ZAVOGLES", "TEST: Drew A at center with flipped_v");
-    }
-}
-      
+
         // --- SWAP ---
         if RUNNING.load(Ordering::Acquire) {
             if let Err(e) = ctx.swap_buffers() {
@@ -354,61 +315,7 @@ if !font_test_ptr.is_null() {
     FRAME_LOCK.store(false, Ordering::Release);
 }
 
-// ===== XMB UI =====
-fn draw_xmb_buttons(batch: &mut BatchRenderer<400, 600>, w: f32, h: f32, _time: f32) {
-    let categories = ["Settings", "Games", "Media"];
-    let y = h * 0.55;
-    let spacing = w * 0.30;
-    let start_x = w * 0.20;
-
-    for (i, _cat) in categories.iter().enumerate() {
-        let x = start_x + (i as f32 * spacing);
-        let selected = SELECTED.load(Ordering::Acquire);
-        let is_selected = i as i32 == selected;
-        let alpha = if is_selected { 1.0 } else { 0.4 };
-        let color = if is_selected {
-            Color::new(0.3, 0.7, 1.0, alpha)
-        } else {
-            Color::new(0.1, 0.3, 0.6, alpha)
-        };
-
-        let bw = w * 0.18;
-        let bh = h * 0.08;
-
-        batch.draw_quad(
-            Rect::from_coords(x - bw / 2.0, y - bh / 2.0, bw, bh),
-            Rect::from_coords(0.0, 0.0, 1.0, 1.0),
-            color,
-        );
-    }
-}
-
-fn draw_xmb_text(batch: &mut BatchRenderer<400, 600>, font: &BitmapFont, w: f32, h: f32) {
-    let categories = ["Settings", "Games", "Media"];
-    let y = h * 0.55;           // مركز الزر
-    let spacing = w * 0.30;
-    let start_x = w * 0.20;
-    let scale = (h * 0.050) / font.line_height;
-
-    for (i, cat) in categories.iter().enumerate() {
-        let x = start_x + (i as f32 * spacing);
-        let text_w = font.measure_text(cat, scale);
-        let text_x = x - text_w / 2.0;
-        // ✅ أعلى النص = مركز الزر - نصف ارتفاع النص
-        let text_y = y - (font.line_height * scale) * 0.5;
-
-        let selected = SELECTED.load(Ordering::Acquire);
-        let is_selected = i as i32 == selected;
-        let color = if is_selected {
-            Color::WHITE
-        } else {
-            Color::new(0.6, 0.6, 0.6, 1.0)
-        };
-
-        draw_text(batch, font, cat, text_x, text_y, scale, color);
-    }
-}
-
+// ===== PANIC HANDLER =====
 #[cfg(not(test))]
 #[lang = "eh_personality"]
 extern "C" fn eh_personality() {}
@@ -416,18 +323,19 @@ extern "C" fn eh_personality() {}
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &core::panic::PanicInfo) -> ! {
-    if let Some(loc) = info.location() {
-        k1_sys::android_log(
-            k1_sys::LogLevel::Error,
+    if info.location().is_some() {
+        za_sys::android_log(
+            za_sys::LogLevel::Error,
             "ZAVOGLES",
             "PANIC! (see logcat for details)",
         );
     } else {
-        k1_sys::android_log(k1_sys::LogLevel::Error, "ZAVOGLES", "PANIC!");
+        za_sys::android_log(za_sys::LogLevel::Error, "ZAVOGLES", "PANIC!");
     }
     loop {}
 }
 
+// ===== TESTS =====
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -4,7 +4,7 @@
 pub mod font;
 
 use core::ffi::{c_char, c_int, c_void};
-use k1_math::{Color, Mat4, Rect, Vec2};
+use za_math::{Color, Mat4, Rect, Vec2};
 
 // ==================== EGL Constants ====================
 pub const EGL_DEFAULT_DISPLAY: *mut c_void = 0 as *mut c_void;
@@ -363,7 +363,7 @@ impl EglDisplay {
     pub fn create_window_surface(
         &mut self,
         config: *mut c_void,
-        win: &k1_sys::NativeWindow,
+        win: &za_sys::NativeWindow,
     ) -> Result<*mut c_void, i32> {
         let surf = unsafe {
             eglCreateWindowSurface(
@@ -943,29 +943,29 @@ impl EglDisplay {
                 Ok(cfg) => {
                     // بدون alloc::format - static strings فقط
                     match i {
-                        0 => k1_sys::android_log(
-                            k1_sys::LogLevel::Info,
-                            "K1-GLES",
+                        0 => za_sys::android_log(
+                            za_sys::LogLevel::Info,
+                            "za-GLES",
                             "Config1: RGBA8+Depth+Stencil",
                         ),
-                        1 => k1_sys::android_log(
-                            k1_sys::LogLevel::Info,
-                            "K1-GLES",
+                        1 => za_sys::android_log(
+                            za_sys::LogLevel::Info,
+                            "za-GLES",
                             "Config2: RGBA8+Depth",
                         ),
-                        2 => k1_sys::android_log(
-                            k1_sys::LogLevel::Info,
-                            "K1-GLES",
+                        2 => za_sys::android_log(
+                            za_sys::LogLevel::Info,
+                            "za-GLES",
                             "Config3: RGBA8 only",
                         ),
-                        3 => k1_sys::android_log(
-                            k1_sys::LogLevel::Info,
-                            "K1-GLES",
+                        3 => za_sys::android_log(
+                            za_sys::LogLevel::Info,
+                            "za-GLES",
                             "Config4: ES3 fallback",
                         ),
-                        4 => k1_sys::android_log(
-                            k1_sys::LogLevel::Info,
-                            "K1-GLES",
+                        4 => za_sys::android_log(
+                            za_sys::LogLevel::Info,
+                            "za-GLES",
                             "Config5: Minimal",
                         ),
                         _ => {}
@@ -987,11 +987,11 @@ pub struct GlContext {
     context: *mut c_void,
     width: i32,
     height: i32,
-    _window: k1_sys::NativeWindow, // OWN the window, don't borrow!
+    _window: za_sys::NativeWindow, // OWN the window, don't borrow!
 }
 
 impl GlContext {
-    // داخل impl GlContext في k1-gles/lib.rs
+    // داخل impl GlContext في za-gles/lib.rs
     pub fn setup_gl_state(&self) {
         unsafe {
             glClearColor(0.0, 0.0, 0.0, 1.0); // أسود (أو أي لون خلفية هادئ)
@@ -1001,40 +1001,40 @@ impl GlContext {
     }
 
     // Take ownership of NativeWindow so it stays alive!
-    pub fn from_window(win: k1_sys::NativeWindow) -> Result<Self, i32> {
+    pub fn from_window(win: za_sys::NativeWindow) -> Result<Self, i32> {
         let w = win.width();
         let h = win.height();
 
         let mut dpy = EglDisplay::get_default().map_err(|e| {
-            k1_sys::android_log(k1_sys::LogLevel::Error, "K1-GLES", "eglGetDisplay failed");
+            za_sys::android_log(za_sys::LogLevel::Error, "za-GLES", "eglGetDisplay failed");
             e
         })?;
 
         let (maj, min) = dpy.initialize().map_err(|e| {
-            k1_sys::android_log(k1_sys::LogLevel::Error, "K1-GLES", "eglInitialize failed");
+            za_sys::android_log(za_sys::LogLevel::Error, "za-GLES", "eglInitialize failed");
             e
         })?;
 
-        k1_sys::android_log(k1_sys::LogLevel::Info, "K1-GLES", "EGL OK");
+        za_sys::android_log(za_sys::LogLevel::Info, "za-GLES", "EGL OK");
 
         let cfg = dpy.choose_config_with_fallback().map_err(|e| {
-            k1_sys::android_log(k1_sys::LogLevel::Error, "K1-GLES", "eglChooseConfig failed");
+            za_sys::android_log(za_sys::LogLevel::Error, "za-GLES", "eglChooseConfig failed");
             e
         })?;
 
         let surf = dpy.create_window_surface(cfg, &win).map_err(|e| {
-            k1_sys::android_log(
-                k1_sys::LogLevel::Error,
-                "K1-GLES",
+            za_sys::android_log(
+                za_sys::LogLevel::Error,
+                "za-GLES",
                 "eglCreateWindowSurface failed",
             );
             e
         })?;
 
         let ctx = dpy.create_context(cfg, 2).map_err(|e| {
-            k1_sys::android_log(
-                k1_sys::LogLevel::Error,
-                "K1-GLES",
+            za_sys::android_log(
+                za_sys::LogLevel::Error,
+                "za-GLES",
                 "eglCreateContext failed",
             );
             e

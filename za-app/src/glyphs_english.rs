@@ -1,5 +1,5 @@
 // Auto-generated
-use k1_gles::font::Glyph;
+use za_gles::font::Glyph;
 
 pub const FONT_GLYPHS: [Option<Glyph>; 95] = [
     // ' '

@@ -1,0 +1,15 @@
+[package]
+name = "za-gles"
+version = "0.1.0"
+edition = "2021"
+authors = ["versonr7"]
+description = "za GLES - Minimal EGL + OpenGL ES 2.0 wrapper (no_alloc)"
+license = "GPL-3.0-only"
+
+[dependencies]
+za-math = { path = "../za-math" }
+za-sys = { path = "../za-sys" }
+
+[features]
+default = []
+mock = ["za-sys/mock"]

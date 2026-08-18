@@ -1,6 +1,6 @@
 #![no_std]
 
-use k1_math::{Color, Rect};
+use za_math::{Color, Rect};
 use crate::{BatchRenderer, Texture};
 
 #[derive(Debug, Clone, Copy)]

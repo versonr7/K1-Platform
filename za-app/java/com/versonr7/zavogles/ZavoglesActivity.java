@@ -13,7 +13,7 @@ public class ZavoglesActivity extends Activity implements SurfaceHolder.Callback
     private static final String TAG = "ZAVOGLES";
 
     static {
-        System.loadLibrary("k1_app");
+        System.loadLibrary("za_app");
     }
 
     // Native methods

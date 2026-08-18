@@ -1,0 +1,16 @@
+[package]
+name = "za-xmb"
+version = "0.1.0"
+edition = "2021"
+authors = ["versonr7"]
+description = "XMB UI layer for ZAVOGLES-GUI"
+license = "GPL-3.0-only"
+
+[lib]
+name = "za_xmb"
+crate-type = ["lib"]
+
+[dependencies]
+za-gles = { path = "../za-gles" }
+za-math = { path = "../za-math" }
+libm = "0.2.16"

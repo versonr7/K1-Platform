@@ -3,7 +3,7 @@
 #![allow(non_camel_case_types)]
 
 use core::ffi::{c_char, c_int, c_void};
-use k1_math::Vec2;
+use za_math::Vec2;
 
 #[repr(C)]
 pub struct ANativeWindow {
@@ -253,7 +253,7 @@ pub mod mock {
 #[cfg(any(not(target_os = "android"), feature = "mock", test))]
 use mock::*;
 
-// ✅ PUBLIC RE-EXPORT so k1-app can use it when mock is enabled
+// ✅ PUBLIC RE-EXPORT so za-app can use it when mock is enabled
 #[cfg(any(not(target_os = "android"), feature = "mock", test))]
 pub use mock::ANativeWindow_fromSurface;
 // ==================== NativeWindow ====================

@@ -1,25 +1,20 @@
 [workspace]
-members = [
-    "k1-app",
-    "k1-gles",
-    "k1-math",
-    "k1-sys",
-]
+members = ["za-app", "za-gles", "za-math", "za-sys", "za-xmb"]
 resolver = "2"
 
 [workspace.package]
 version = "0.1.0"
 edition = "2021"
-authors = ["K1 Team"]
-license = "MIT OR Apache-2.0"
+authors = ["versonr7"]
+license = "GPL-3.0-only"
 repository = "https://github.com/versonr7/ZAVOGLES-GUI"
 
 [workspace.dependencies]
 # Math
-k1-math = { path = "k1-math" }
+za-math = { path = "za-math" }
 
 # System
-k1-sys = { path = "k1-sys" }
+za-sys = { path = "za-sys" }
 
 [profile.release]
 opt-level = 3

@@ -28,39 +28,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "k1-app"
-version = "0.1.0"
-dependencies = [
- "heapless",
- "k1-gles",
- "k1-math",
- "k1-sys",
- "libm",
-]
-
-[[package]]
-name = "k1-gles"
-version = "0.1.0"
-dependencies = [
- "k1-math",
- "k1-sys",
-]
-
-[[package]]
-name = "k1-math"
-version = "0.1.0"
-dependencies = [
- "libm",
-]
-
-[[package]]
-name = "k1-sys"
-version = "0.1.0"
-dependencies = [
- "k1-math",
-]
-
-[[package]]
 name = "libm"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -71,3 +38,46 @@ name = "stable_deref_trait"
 version = "1.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6ce2be8dc25455e1f91df71bfa12ad37d7af1092ae736f3a6cd0e37bc7810596"
+
+[[package]]
+name = "za-app"
+version = "0.1.0"
+dependencies = [
+ "heapless",
+ "libm",
+ "za-gles",
+ "za-math",
+ "za-sys",
+ "za-xmb",
+]
+
+[[package]]
+name = "za-gles"
+version = "0.1.0"
+dependencies = [
+ "za-math",
+ "za-sys",
+]
+
+[[package]]
+name = "za-math"
+version = "0.1.0"
+dependencies = [
+ "libm",
+]
+
+[[package]]
+name = "za-sys"
+version = "0.1.0"
+dependencies = [
+ "za-math",
+]
+
+[[package]]
+name = "za-xmb"
+version = "0.1.0"
+dependencies = [
+ "libm",
+ "za-gles",
+ "za-math",
+]

@@ -1,10 +1,10 @@
 [package]
-name = "k1-math"
+name = "za-math"
 version = "0.1.0"
 edition = "2021"
 authors = ["versonr7"]
-description = "K1 Math - no_std linear algebra"
-license = "MIT"
+description = "za Math - no_std linear algebra"
+license = "GPL-3.0-only"
 
 [features]
 default = []
