@@ -51,13 +51,13 @@ jobs:
           local-cache: true  # هذي العامل الأساسي في التسريع
 
       - name: Build Debug APK
-        run: cargo apk2 build -p k1-app
+        run: cargo apk2 build -p za-app
         env:
           RUSTFLAGS: "-C codegen-units=256"
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: k1-debug-apk
+          name: za-debug-apk
           path: target/debug/apk/*.apk
           
