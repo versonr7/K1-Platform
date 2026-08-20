@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - name: Setup Java 17
         uses: actions/setup-java@v4
@@ -25,11 +27,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Rust nightly
-        uses: dtolnay/rust-toolchain@nightly
-        with:
-          targets: aarch64-linux-android
-          components: rust-src
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@master
+        # سيقرأ ملف rust-toolchain.toml تلقائياً
 
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
@@ -46,9 +46,9 @@ jobs:
       - name: Setup Android NDK
         uses: nttld/setup-ndk@v1
         with:
-          ndk-version: r26b
+          ndk-version: r29
           link-to-sdk: true
-          local-cache: true  # هذي العامل الأساسي في التسريع
+          local-cache: true
 
       - name: Build Debug APK
         run: cargo apk2 build -p za-app
@@ -60,4 +60,3 @@ jobs:
         with:
           name: za-debug-apk
           path: target/debug/apk/*.apk
-          

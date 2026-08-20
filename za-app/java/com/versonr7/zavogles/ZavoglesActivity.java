@@ -90,13 +90,19 @@ public class ZavoglesActivity extends Activity implements SurfaceHolder.Callback
 
     // SurfaceHolder.Callback
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        Log.i(TAG, "Surface created");
-        nativeOnSurfaceCreated(holder.getSurface());
-        running = true;
-        renderThread = new Thread(this::renderLoop);
-        renderThread.start();
+public void surfaceCreated(SurfaceHolder holder) {
+    Log.i(TAG, "Surface created");
+
+    // ✅ إصلاح Claude: لا تبدأ خيطًا جديدًا إذا ما زال القديم يعمل
+    if (renderThread != null && renderThread.isAlive()) {
+        return;
     }
+
+    nativeOnSurfaceCreated(holder.getSurface());
+    running = true;
+    renderThread = new Thread(this::renderLoop);
+    renderThread.start();
+}
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {

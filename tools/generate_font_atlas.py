@@ -79,7 +79,7 @@ def main():
 
     with open(os.path.join(OUTPUT_DIR, "font_glyphs.rs"), "w") as f:
         f.write("// Auto-generated\n")
-        f.write("use k1_gles::font::Glyph;\n\n")
+        f.write("use za_gles::font::Glyph;\n\n")
         f.write(f"pub const FONT_GLYPHS: [Option<Glyph>; {len(glyph_data)}] = [\n")
         for g in glyph_data:
             esc = repr(g['char'])
@@ -99,4 +99,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-  

@@ -9,9 +9,9 @@ use core::ffi::{c_int, c_void};
 use core::mem::MaybeUninit;
 use core::sync::atomic::{AtomicBool, AtomicI32, AtomicPtr, AtomicU32, Ordering};
 
-use za_gles::font::{BitmapFont};
+use za_gles::font::BitmapFont;
 use za_gles::{BatchRenderer, GlContext};
-use za_math::{Color, Mat4, Rect};
+use za_math::Mat4;
 use za_sys::NativeWindow;
 use za_xmb::XmbState;
 
@@ -64,14 +64,30 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnRenderThre
     _class: *mut c_void,
 ) {
     unsafe {
+        // تأكد أن السياق الحالي ساري قبل حذف الموارد
+        let ctx_ptr = GL_CTX.load(Ordering::Acquire);
+        if !ctx_ptr.is_null() {
+            let _ = (*ctx_ptr).make_current();
+        }
+
+        // احذف الخط أولاً (يستخدم Textures)
+        if !FONT.load(Ordering::Relaxed).is_null() {
+            core::ptr::drop_in_place(FONT_STORAGE.as_mut_ptr());
+            FONT.store(core::ptr::null_mut(), Ordering::Release);
+        }
+
+        // ثم احذف BatchRenderer
         if !BATCH.load(Ordering::Relaxed).is_null() {
             core::ptr::drop_in_place(BATCH_STORAGE.as_mut_ptr());
             BATCH.store(core::ptr::null_mut(), Ordering::Release);
         }
+
+        // أخيرًا احذف سياق GL
         if !GL_CTX.load(Ordering::Relaxed).is_null() {
             core::ptr::drop_in_place(GL_CTX_STORAGE.as_mut_ptr());
             GL_CTX.store(core::ptr::null_mut(), Ordering::Release);
         }
+
         INITIALIZED.store(false, Ordering::Release);
     }
 }
@@ -102,6 +118,16 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnSurfaceCre
         if let Some(win) = NativeWindow::from_raw(anw) {
             let w = win.width();
             let h = win.height();
+
+            // ✅ إصلاح تسريب السياق: إذا كان فيه سياق قديم، امسحه وأبطل المؤشرات القديمة
+            let old_ctx = GL_CTX.load(Ordering::Acquire);
+            if !old_ctx.is_null() {
+                core::ptr::drop_in_place(old_ctx);
+                GL_CTX.store(core::ptr::null_mut(), Ordering::Release);
+                BATCH.store(core::ptr::null_mut(), Ordering::Release);
+                FONT.store(core::ptr::null_mut(), Ordering::Release);
+                logfox!("ZAVOGLES", "Old GL context dropped");
+            }
 
             match GlContext::from_window(win) {
                 Ok(ctx) => {
@@ -237,13 +263,6 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
                     return;
                 }
             }
-
-            let font_ptr = FONT.load(Ordering::Acquire);
-            if !font_ptr.is_null() {
-                core::ptr::drop_in_place(font_ptr);
-                FONT.store(core::ptr::null_mut(), Ordering::Release);
-                logfox!("ZAVOGLES", "Font invalidated for re-upload");
-            }
         }
 
         let batch = &mut *BATCH.load(Ordering::Acquire);
@@ -332,7 +351,8 @@ fn panic(info: &core::panic::PanicInfo) -> ! {
     } else {
         za_sys::android_log(za_sys::LogLevel::Error, "ZAVOGLES", "PANIC!");
     }
-    loop {}
+    // ✅ إصلاح Claude: إنهاء فوري بدل حلقة لا نهائية
+    unsafe { core::intrinsics::abort(); }
 }
 
 // ===== TESTS =====
