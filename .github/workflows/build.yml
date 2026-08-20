@@ -1,4 +1,4 @@
-name: Build Android (cargo-apk2)
+name: Build Android (za-app)
 
 on:
   push:
@@ -13,7 +13,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
@@ -29,7 +29,10 @@ jobs:
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@master
-        # سيقرأ ملف rust-toolchain.toml تلقائياً
+        with:
+          toolchain: nightly
+          targets: aarch64-linux-android
+          components: rust-src
 
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
@@ -41,6 +44,8 @@ jobs:
           if ! command -v cargo-apk2 &> /dev/null; then
             curl -L --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/cargo-bins/cargo-binstall/main/install-from-binstall-release.sh | sh
             cargo binstall --no-confirm cargo-apk2
+          else
+            echo "cargo-apk2 already installed"
           fi
 
       - name: Setup Android NDK
