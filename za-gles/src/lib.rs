@@ -20,7 +20,7 @@ pub const EGL_GREEN_SIZE: c_int = 0x3023;
 pub const EGL_BLUE_SIZE: c_int = 0x3022;
 pub const EGL_ALPHA_SIZE: c_int = 0x3021; // ← 0x3021 مو 0x3027!
 pub const EGL_DEPTH_SIZE: c_int = 0x3025;
-pub const EGL_STENCIL_SIZE: c_int = 0x3028; // ← 0x3028 مو 0x3027!
+pub const EGL_STENCIL_SIZE: c_int = 0x3026; // ✅ التصحيح
 pub const EGL_CONFIG_CAVEAT: c_int = 0x3027; // ← 0x3027 هي هذي!
 pub const EGL_OPENGL_ES3_BIT: c_int = 0x0040; // جديد
 pub const EGL_CONTEXT_CLIENT_VERSION: c_int = 0x3098;
@@ -89,6 +89,7 @@ extern "C" {
     pub fn eglDestroyContext(dpy: *mut c_void, ctx: *mut c_void) -> c_int;
     pub fn eglDestroySurface(dpy: *mut c_void, surface: *mut c_void) -> c_int;
     pub fn eglGetError() -> c_int;
+    pub fn eglTerminate(dpy: *mut c_void) -> c_int;   // ← أضف هذا
 }
 
 #[cfg(any(not(target_os = "android"), feature = "mock", test))]
@@ -149,8 +150,12 @@ pub mod egl_mock {
     pub unsafe fn eglDestroySurface(_: *mut c_void, _: *mut c_void) -> c_int {
         1
     }
-    pub unsafe fn eglGetError() -> c_int {
+        pub unsafe fn eglGetError() -> c_int {
         0x3000
+    }
+
+    pub unsafe fn eglTerminate(_: *mut c_void) -> c_int {
+        1
     }
 }
 #[cfg(any(not(target_os = "android"), feature = "mock", test))]
@@ -188,6 +193,7 @@ extern "C" {
     );
     pub fn glDeleteShader(shader: c_int);
     pub fn glCreateProgram() -> c_int;
+    pub fn glDeleteProgram(program: c_int);   // ← أضف هذا
     pub fn glAttachShader(program: c_int, shader: c_int);
     pub fn glLinkProgram(program: c_int);
     pub fn glGetProgramiv(program: c_int, pname: c_int, params: *mut c_int);
@@ -261,6 +267,7 @@ pub mod gl_mock {
     }
     pub unsafe fn glGetShaderInfoLog(_: c_int, _: c_int, _: *mut c_int, _: *mut c_char) {}
     pub unsafe fn glDeleteShader(_: c_int) {}
+    pub unsafe fn glDeleteProgram(_: c_int) {}
     pub unsafe fn glCreateProgram() -> c_int {
         NEXT.fetch_add(1, Ordering::Relaxed)
     }
@@ -407,8 +414,16 @@ impl EglDisplay {
             Err(unsafe { eglGetError() })
         }
     }
-    pub fn handle(&self) -> *mut c_void {
+        pub fn handle(&self) -> *mut c_void {
         self.handle
+    }
+}
+
+impl Drop for EglDisplay {
+    fn drop(&mut self) {
+        unsafe {
+            eglTerminate(self.handle);
+        }
     }
 }
 
@@ -568,8 +583,16 @@ impl Program {
         }
     }
 
-    pub fn handle(&self) -> c_int {
+        pub fn handle(&self) -> c_int {
         self.handle
+    }
+}
+
+impl Drop for Program {
+    fn drop(&mut self) {
+        unsafe {
+            glDeleteProgram(self.handle);
+        }
     }
 }
 
@@ -1077,8 +1100,22 @@ impl GlContext {
     pub fn width(&self) -> i32 {
         self.width
     }
-    pub fn height(&self) -> i32 {
+        pub fn height(&self) -> i32 {
         self.height
+    }
+}
+
+impl Drop for GlContext {
+    fn drop(&mut self) {
+        unsafe {
+            let _ = self.display.make_current(EGL_NO_SURFACE, EGL_NO_CONTEXT);
+            if !self.surface.is_null() {
+                eglDestroySurface(self.display.handle(), self.surface);
+            }
+            if !self.context.is_null() {
+                eglDestroyContext(self.display.handle(), self.context);
+            }
+        }
     }
 }
 

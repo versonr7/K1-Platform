@@ -43,7 +43,7 @@ impl BitmapFont {
 
     pub fn glyph_for(&self, c: char) -> Option<&Glyph> {
         let idx = c as usize;
-        if idx >= 32 && idx < 128 {
+        if idx >= 32 && idx < 127 {
             self.glyphs[idx - 32].as_ref()
         } else {
             None
