@@ -1,7 +1,7 @@
 #![no_std]
 
-use za_math::{Color, Rect};
 use crate::{BatchRenderer, Texture};
+use za_math::{Color, Rect};
 
 #[derive(Debug, Clone, Copy)]
 pub struct Glyph {
@@ -77,9 +77,9 @@ pub fn draw_text<const MAX_VERTICES: usize, const MAX_INDICES: usize>(
             let rect = Rect::from_coords(x, y, g.width * scale, g.height * scale);
             // ✅ قلب UV عمودياً: PIL top-down → OpenGL bottom-up
             // ✅ بدون قلب حالياً للاختبار
-let uv = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
-batch.draw_quad(rect, uv, color);
-x += g.advance * scale;
+            let uv = Rect::from_coords(g.uv_x, g.uv_y, g.uv_w, g.uv_h);
+            batch.draw_quad(rect, uv, color);
+            x += g.advance * scale;
         }
     }
 }

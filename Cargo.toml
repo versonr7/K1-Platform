@@ -18,6 +18,7 @@ za-sys = { path = "za-sys" }
 
 [profile.release]
 opt-level = 3
+panic = "abort"
 #lto = "fat"
 #codegen-units = 1
 #strip = true
@@ -25,4 +26,5 @@ opt-level = 3
 
 [profile.dev]
 opt-level = 1
+panic = "abort"
 # panic strategy: default is unwind

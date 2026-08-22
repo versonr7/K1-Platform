@@ -5,5 +5,4 @@
 *~
 .DS_Store
 *.spv
-Cargo.lock
 .cargo/

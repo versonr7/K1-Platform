@@ -89,7 +89,7 @@ extern "C" {
     pub fn eglDestroyContext(dpy: *mut c_void, ctx: *mut c_void) -> c_int;
     pub fn eglDestroySurface(dpy: *mut c_void, surface: *mut c_void) -> c_int;
     pub fn eglGetError() -> c_int;
-    pub fn eglTerminate(dpy: *mut c_void) -> c_int;   // ← أضف هذا
+    pub fn eglTerminate(dpy: *mut c_void) -> c_int; // ← أضف هذا
 }
 
 #[cfg(any(not(target_os = "android"), feature = "mock", test))]
@@ -150,7 +150,7 @@ pub mod egl_mock {
     pub unsafe fn eglDestroySurface(_: *mut c_void, _: *mut c_void) -> c_int {
         1
     }
-        pub unsafe fn eglGetError() -> c_int {
+    pub unsafe fn eglGetError() -> c_int {
         0x3000
     }
 
@@ -193,7 +193,7 @@ extern "C" {
     );
     pub fn glDeleteShader(shader: c_int);
     pub fn glCreateProgram() -> c_int;
-    pub fn glDeleteProgram(program: c_int);   // ← أضف هذا
+    pub fn glDeleteProgram(program: c_int); // ← أضف هذا
     pub fn glAttachShader(program: c_int, shader: c_int);
     pub fn glLinkProgram(program: c_int);
     pub fn glGetProgramiv(program: c_int, pname: c_int, params: *mut c_int);
@@ -414,7 +414,7 @@ impl EglDisplay {
             Err(unsafe { eglGetError() })
         }
     }
-        pub fn handle(&self) -> *mut c_void {
+    pub fn handle(&self) -> *mut c_void {
         self.handle
     }
 }
@@ -583,7 +583,7 @@ impl Program {
         }
     }
 
-        pub fn handle(&self) -> c_int {
+    pub fn handle(&self) -> c_int {
         self.handle
     }
 }
@@ -1100,7 +1100,7 @@ impl GlContext {
     pub fn width(&self) -> i32 {
         self.width
     }
-        pub fn height(&self) -> i32 {
+    pub fn height(&self) -> i32 {
         self.height
     }
 }

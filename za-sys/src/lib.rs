@@ -66,7 +66,9 @@ extern "C" {
 
     // INPUT QUEUE
     pub fn AInputQueue_finishEvent(queue: *mut AInputQueue, event: *mut c_void, handled: c_int);
-
+    pub fn AInputQueue_getEvent(queue: *mut AInputQueue, event: *mut *mut c_void) -> c_int;
+    pub fn AInputQueue_preDispatchEvent(queue: *mut AInputQueue, event: *mut c_void) -> c_int;
+    pub fn AInputQueue_sendEvent(queue: *mut AInputQueue, event: *mut c_void, handled: c_int);
     // INPUT EVENTS
     pub fn AInputEvent_getType(event: *const c_void) -> c_int;
     pub fn AInputEvent_getDeviceId(event: *const c_void) -> c_int;
