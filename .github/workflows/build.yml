@@ -27,10 +27,9 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Setup Rust
-        uses: dtolnay/rust-toolchain@master
+      - name: Setup Rust nightly
+        uses: dtolnay/rust-toolchain@nightly
         with:
-          toolchain: nightly
           targets: aarch64-linux-android
           components: rust-src
 

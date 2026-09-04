@@ -337,10 +337,6 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
 
 // ===== PANIC HANDLER =====
 #[cfg(not(test))]
-#[lang = "eh_personality"]
-extern "C" fn eh_personality() {}
-
-#[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &core::panic::PanicInfo) -> ! {
     if info.location().is_some() {
