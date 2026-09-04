@@ -347,7 +347,7 @@ fn panic(info: &core::panic::PanicInfo) -> ! {
         za_sys::android_log(za_sys::LogLevel::Error, "ZAVOGLES", "PANIC!");
     }
     // ✅ إصلاح Claude: إنهاء فوري بدل حلقة لا نهائية
-    unsafe { core::intrinsics::abort(); }
+    loop {}
 }
 
 // ===== TESTS =====
