@@ -1,7 +1,5 @@
 #![no_std]
 #![allow(warnings)]
-#![cfg_attr(not(test), feature(lang_items))]
-#![cfg_attr(not(test), feature(core_intrinsics))]   // ← أضف هذا
 
 mod glyphs_english;
 use glyphs_english::FONT_GLYPHS;
