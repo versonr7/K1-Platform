@@ -334,6 +334,12 @@ pub extern "C" fn Java_com_versonr7_zavogles_ZavoglesActivity_nativeOnFrame(
 }
 
 // ===== PANIC HANDLER =====
+// مطلوب بسبب فجوة معروفة برستك (rust-lang/rust#56152) لبناء
+// no_std + cdylib بوضع dev، حتى مع panic="abort".
+#[cfg(not(test))]
+#[no_mangle]
+pub extern "C" fn rust_eh_personality() {}
+
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &core::panic::PanicInfo) -> ! {
